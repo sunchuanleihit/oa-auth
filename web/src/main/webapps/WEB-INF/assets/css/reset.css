@@ -1,0 +1,55 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+
+
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+
+.JS_BTNGROUP { border-top: 1px solid #ddd; }
+.JS_BTNGROUP a { font-size: 20px; line-height: 50px; display: inline-block; width: 49%; height: 50px; text-align: center; }
+.JS_BTNGROUP a:first-child { border-right: 1px solid #ddd; }
+.JS_CONTENT { font-size: 18px; width: 100%; padding: 20px 0; text-align: center; color: #333; }
+.JS_ALERT { position: fixed; z-index: 110; top: 20%; left: 10%; width: 80%; padding: 20px 20px 5px 20px; border-radius: 5px; background: #fff; }
+.JS_MASK { -webkit-transition: all 0.3s  ease-out 0; -moz-transition: all 0.3s  ease-out 0; -o-transition: all 1s ease-out 0; transition: all 0.3s ease-out 0;position: fixed; z-index: 100; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, .4); }
