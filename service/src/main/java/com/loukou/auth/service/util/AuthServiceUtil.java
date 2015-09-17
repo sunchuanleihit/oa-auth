@@ -19,7 +19,7 @@ import com.loukou.auth.exception.AuthRuntimeException;
 
 public final class AuthServiceUtil {
 
-	private static final String DES_KEY = "12345678";
+	private static final String BASE64_TAG = "==";
 
 	private static byte[] operate(byte[] content, String password,
 			boolean isEncrypt) {
@@ -47,23 +47,26 @@ public final class AuthServiceUtil {
 		}
 	}
 
-	public static String encrypt(String content) {
-		byte[] result = operate(content.getBytes(), DES_KEY, true);
-		return Base64.encodeBase64String(result);
+	public static String encrypt(String content, String key) {
+		byte[] bytes = operate(content.getBytes(), key, true);
+		String base64Str = Base64.encodeBase64String(bytes);
+		String result = base64Str.substring(0,
+				base64Str.length() - BASE64_TAG.length());
+		return result;
 	}
 
-	public static String decrypt(String content) {
-		byte[] rawContent = Base64.decodeBase64(content);
-		byte[] result = operate(rawContent, DES_KEY, false);
+	public static String decrypt(String content, String key) {
+		byte[] rawContent = Base64.decodeBase64(content + BASE64_TAG);
+		byte[] result = operate(rawContent, key, false);
 		return new String(result);
 	}
 
 	public static void main(String[] args) {
-		String encrypted = encrypt("12345678");
+		String encrypted = encrypt("12345678", "12345678");
 
 		System.out.println(encrypted);
 
-		String decrypted = decrypt(encrypted);
+		String decrypted = decrypt(encrypted, "12345678");
 
 		System.out.println(decrypted);
 	}

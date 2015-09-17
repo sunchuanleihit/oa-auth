@@ -8,7 +8,7 @@ import com.loukou.auth.service.entity.UserEntity;
 public interface UserDao extends CrudRepository<UserEntity, Integer>,
 		JpaSpecificationExecutor<UserEntity> {
 
-	UserEntity findByUserNameAndPassword(String userName, String password);
+	UserEntity findByEmailAndPassword(String email, String password);
 
 	UserEntity findById(int userId);
 

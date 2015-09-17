@@ -12,9 +12,9 @@
 
 	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
 		init-method="init" destroy-method="close">
-		<property name="url" value="${database.jdbc.url}" />
-		<property name="username" value="${database.jdbc.username}" />
-		<property name="password" value="${database.jdbc.password}" />
+		<property name="url" value="${oa.database.jdbc.url}" />
+		<property name="username" value="${oa.database.jdbc.username}" />
+		<property name="password" value="${oa.database.jdbc.password}" />
 		<property name="initialSize" value="1" />
 		<property name="minIdle" value="1" />
 		<property name="maxActive" value="20" />
@@ -77,4 +77,9 @@
 				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer"></bean>
 		</property>
 	</bean>
+
+	<bean id="des.key" class="java.lang.String">
+		<constructor-arg value="${des.key}" />
+	</bean>
+
 </beans>

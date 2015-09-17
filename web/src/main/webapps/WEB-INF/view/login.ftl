@@ -25,10 +25,11 @@
 			
 			<div id="logindiv" class="col-md-4 col-md-offset-4">
 				<form class="form-horizontal" method="post" action="/doLogin">
+					<input type="hidden" name="appid" value="${appId}" />
   					<div class="form-group">
     					<label for="labelusername" class="col-sm-2 control-label">用户名</label>
 	    				<div class="col-sm-10">
-	      					<input type="text" class="form-control" id="username" name="username" placeholder="">
+	      					<input type="email" class="form-control" id="username" name="username" placeholder="输入公司邮箱">
 	    				</div>
   					</div>
 					<div class="form-group">

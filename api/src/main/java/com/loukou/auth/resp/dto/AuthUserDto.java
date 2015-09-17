@@ -9,6 +9,8 @@ public class AuthUserDto implements Serializable {
 
 	private int userId;
 
+	private String name;
+
 	private List<String> roles;
 
 	public int getUserId() {
@@ -25,6 +27,14 @@ public class AuthUserDto implements Serializable {
 
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

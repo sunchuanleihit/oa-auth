@@ -1,5 +1,7 @@
 package com.loukou.auth.service.impl;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,21 +24,24 @@ public class AuthServiceImpl implements AuthService {
 
 	private static final int TIME_DIFF = 1000 * 60 * 5;
 
+	private static final String EMAIL_SUFFIX = "@loukou.com";
 	private static final char SEPARATOR = '|';
 
+	@Resource(name = "des.key")
+	private String desKey;
+
 	@Override
-	public String login(String userName, String password) {
-		if (StringUtils.isNotEmpty(userName)
+	public String login(String email, String password) {
+		if (StringUtils.isNotEmpty(email)
+				&& StringUtils.endsWith(email, EMAIL_SUFFIX)
 				&& StringUtils.isNotEmpty(password)) {
 			String md5 = DigestUtils.md5Hex(password);
-			UserEntity user = userDao.findByUserNameAndPassword(userName, md5);
+			UserEntity user = userDao.findByEmailAndPassword(email, md5);
 			if (user != null) {
 				return generateToken(user.getId());
 			}
 		}
-
 		return null;
-
 	}
 
 	private String generateToken(int userId) {
@@ -44,14 +49,15 @@ public class AuthServiceImpl implements AuthService {
 		sb.append(System.currentTimeMillis());
 		sb.append(SEPARATOR);
 		sb.append(userId);
-		return AuthServiceUtil.encrypt(sb.toString());
+		return AuthServiceUtil.encrypt(sb.toString(), this.desKey);
 	}
 
-	public RespDto<AuthUserDto> validateToken(String token) {
+	public RespDto<AuthUserDto> validateToken(int appId, String token) {
 		RespDto<AuthUserDto> result = new RespDto<AuthUserDto>();
 		try {
 			if (StringUtils.isNotEmpty(token)) {
-				String formatedStr = AuthServiceUtil.decrypt(token);
+				String formatedStr = AuthServiceUtil
+						.decrypt(token, this.desKey);
 				String[] splitted = StringUtils.split(formatedStr, SEPARATOR);
 				if (splitted != null && splitted.length == 2
 						&& StringUtils.isNumeric(splitted[0])

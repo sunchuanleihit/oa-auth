@@ -15,5 +15,10 @@
 	<context:component-scan base-package="com.loukou.auth.web" />
 
 	<import resource="classpath*:properties-appcontext.xml" />
+	<import resource="classpath*:oa-auth-service-appcontext.xml" />
 	
+	<bean id="domain.suffix" class="java.lang.String">
+		<constructor-arg value="${domain.suffix}" />
+	</bean>
+
 </beans>

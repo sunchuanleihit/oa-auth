@@ -17,8 +17,8 @@ public class UserEntity {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "user_name")
-	private String userName;
+	@Column(name = "email")
+	private String email;
 
 	@Column(name = "real_name")
 	private String realName;
@@ -38,14 +38,6 @@ public class UserEntity {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	public String getRealName() {
@@ -78,6 +70,14 @@ public class UserEntity {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }
