@@ -1,53 +1,77 @@
 package com.loukou.auth.service.impl;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.eclipse.jetty.util.security.Credential.MD5;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.util.StringUtils;
 import com.loukou.auth.api.AuthService;
 import com.loukou.auth.enums.AuthResultEnum;
-import com.loukou.auth.resp.dto.AuthedUserDto;
+import com.loukou.auth.exception.AuthRuntimeException;
+import com.loukou.auth.resp.dto.AuthUserDto;
 import com.loukou.auth.resp.dto.RespDto;
-import com.loukou.auth.service.dao.LkAdminDao;
-import com.loukou.auth.service.dao.LkAdminRoleDao;
-import com.loukou.auth.service.entity.LkAdminEntity;
+import com.loukou.auth.service.dao.UserDao;
+import com.loukou.auth.service.entity.UserEntity;
+import com.loukou.auth.service.util.AuthServiceUtil;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired
-	private LkAdminDao adminDao;
-	
-	@Autowired
-	private LkAdminRoleDao adminRoleDao;
-	
+	private UserDao userDao;
+
+	private static final int TIME_DIFF = 1000 * 60 * 5;
+
+	private static final char SEPARATOR = '|';
 
 	@Override
-	public RespDto<AuthedUserDto> getUserByNameAndPassword(String userName, String password) {
-		RespDto<AuthedUserDto> resp = new RespDto<AuthedUserDto>();
-				
-		LkAdminEntity user = adminDao.findByUserName(userName);
-		if(user == null){
-			resp.setResult(AuthResultEnum.RESULT_AUTH_USER_NOT_FOUND);
-			return resp;
+	public String login(String userName, String password) {
+		if (StringUtils.isNotEmpty(userName)
+				&& StringUtils.isNotEmpty(password)) {
+			String md5 = DigestUtils.md5Hex(password);
+			UserEntity user = userDao.findByUserNameAndPassword(userName, md5);
+			if (user != null) {
+				return generateToken(user.getId());
+			}
 		}
-		if(user.getIsUse() == 1){
-			//该用户已停用
-			resp.setResult(AuthResultEnum.RESULT_AUTH_USER_EXPIRED);
-			return resp;
-		}
-		String md5Caled =  DigestUtils.md5Hex(password);
-		if(!StringUtils.equals(user.getUserPassword(), md5Caled)){
-			resp.setResult(AuthResultEnum.RESULT_AUTH_WRONG_PASSWORD);
-			return resp;
-		}
-		AuthedUserDto authUser = new AuthedUserDto();
-		authUser.setUserId(user.getUserId());
-		resp.setData(authUser);
-		
-		return resp;
+
+		return null;
+
 	}
 
+	private String generateToken(int userId) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(System.currentTimeMillis());
+		sb.append(SEPARATOR);
+		sb.append(userId);
+		return AuthServiceUtil.encrypt(sb.toString());
+	}
+
+	public RespDto<AuthUserDto> validateToken(String token) {
+		RespDto<AuthUserDto> result = new RespDto<AuthUserDto>();
+		try {
+			if (StringUtils.isNotEmpty(token)) {
+				String formatedStr = AuthServiceUtil.decrypt(token);
+				String[] splitted = StringUtils.split(formatedStr, SEPARATOR);
+				if (splitted != null && splitted.length == 2
+						&& StringUtils.isNumeric(splitted[0])
+						&& StringUtils.isNumeric(splitted[1])) {
+					int userId = Integer.valueOf(splitted[1]);
+					long timestamp = Long.valueOf(splitted[0]);
+					if (System.currentTimeMillis() - timestamp <= TIME_DIFF) {
+						AuthUserDto dto = new AuthUserDto();
+						dto.setUserId(userId);
+						result.setData(dto);
+						result.setResult(AuthResultEnum.RESULT_AUTH_SUCCESS);
+					} else {
+						result.setResult(AuthResultEnum.RESULT_AUTH_TOKEN_EXPIRED);
+					}
+				}
+			}
+		} catch (AuthRuntimeException e) {
+			result.setResult(AuthResultEnum.RESULT_AUTH_FAIL);
+		}
+
+		return result;
+	}
 }

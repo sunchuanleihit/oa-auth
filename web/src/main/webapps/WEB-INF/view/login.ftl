@@ -6,74 +6,44 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>LOGIN</title>
-        <script src="<@spring.url '/assets/include/jquery/1.11.2/jquery.min.js' />"></script>
-        <script src="<@spring.url '/assets/include/bootstrap/3.3.4/js/bootstrap.min.js' />"></script>
-        <script src="<@spring.url '/assets/include/My97DatePicker/WdatePicker.js' /> "></script>
-        <script src="<@spring.url '/assets/include/bootstrap/3.3.4/js/bootstrap-datepicker.min.js' />"></script>
-        <script src="<@spring.url '/assets/include/bootstrap/3.3.4/js/bootstrap-datepicker.zh-CN.min.js' />"></script>
-        <script src="<@spring.url '/assets/include/My97DatePicker/WdatePicker.js' />"></script>
-        <link rel="stylesheet" href="<@spring.url '/assets/css/style.css' />" type="text/css" />
-        <link rel="stylesheet" href="<@spring.url '/assets/include/bootstrap/3.3.4/css/bootstrap-datepicker3.min.css' />" type="text/css" />
-        <link rel="stylesheet" href="<@spring.url '/assets/include/bootstrap/3.3.4/css/bootstrap.min.css' />" type="text/css" />
-        <link rel="stylesheet" href="<@spring.url '/assets/css/main.css' />" type="text/css" />
-        <link rel="stylesheet" href="<@spring.url '/assets/include/My97DatePicker/skin/WdatePicker.css'/>" type="text/css" />
-        <style type="text/css">
-            body {
-                padding-top: 50px;
-                 padding-bottom: 20px;
-            }
-        </style>
-        <script type="text/javascript">
-            if(top != self)
-            {
-                top.location.href = self.location.href;
-            }
-        </script>
+        <link rel="stylesheet" href="<@spring.url '/assets/css/bootstrap.min.css' />" type="text/css" />
     </head>
     <body id="login">
 	   	<div id="login-wrapper" class="png_bg">
-			<div id="login-top">
-				<h1>
-					楼口财务系统
-				</h1>
-				
-				<a href="http://www.loukou.com/">
-					<img id="logo" src="<@spring.url '/assets/images/logo.png' />">
-				</a>
+	   		<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<center>
+						<h1>
+							后台系统
+						</h1>
+					</center>
+				</div>
+				<div class="col-md-4">
+				</div>
 			</div>
 			
-			<div id="login-content">
-				<form method="POST" id="LoginForm" novalidate="novalidate" action="/login">
-					<p>
-						<label>
-							用户名
-						</label>
-						<input class="text-input valid" type="text" name="username" aria-required="true" aria-invalid="false" aria-describedby="user_name-error">
-					<span id="user_name-error" class="error success valid"></span></p>
-					<div class="clear">
+			
+			<div id="logindiv" class="col-md-4 col-md-offset-4">
+				<form class="form-horizontal" method="post" action="/doLogin">
+  					<div class="form-group">
+    					<label for="labelusername" class="col-sm-2 control-label">用户名</label>
+	    				<div class="col-sm-10">
+	      					<input type="text" class="form-control" id="username" name="username" placeholder="">
+	    				</div>
+  					</div>
+					<div class="form-group">
+						<label for="labelpassword" class="col-sm-2 control-label">密码</label>
+					    <div class="col-sm-10">
+					   		<input type="password" class="form-control" id="password" name="password" placeholder="">
+					    </div>
 					</div>
-					<p>
-						<label>
-							密码
-						</label>
-						<input class="text-input valid" type="password" name="password" aria-required="true" aria-invalid="false" aria-describedby="password-error">
-					<span id="password-error" class="error success valid"></span></p>
-					<div class="clear">
-					</div>
-					<p id="remember-password">
-						<label>
-							<input type="checkbox">
-							记住我
-						</label>
-					</p>
-					<div class="clear">
-					</div>
-					<p>
-						<input class="button" type="submit" value="登录" id="login-btn">
-					</p>
+  					<div class="form-group">
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default">登录</button>
+    					</div>
+  					</div>
 				</form>
 			</div>
-		</div>	
-  
+		</div>
     </body>
     </html>
