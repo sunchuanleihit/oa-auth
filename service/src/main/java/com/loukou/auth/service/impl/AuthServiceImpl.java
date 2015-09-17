@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Autowired
 	private UserDao userDao;
-
+	
 	private static final int TIME_DIFF = 1000 * 60 * 5;
 
 	private static final String EMAIL_SUFFIX = "@loukou.com";
