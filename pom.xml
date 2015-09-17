@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>oa-auth-root</artifactId>
-  <groupId>com.loukou</groupId>
   <version>0.1.0-SNAPSHOT</version>
   <name>auth-common-root</name>
   <packaging>pom</packaging>
@@ -57,9 +56,9 @@
 
   </dependencyManagement>
   <modules>
-    <module>oa-auth-api</module>
-    <module>oa-auth-service</module>
-    <module>oa-auth-web</module>
-    <module>oa-auth-duboo</module>
+  	<module>api</module>
+  	<module>service</module>
+  	<module>web</module>
+  	<module>dubbo</module>
   </modules>
 </project>
