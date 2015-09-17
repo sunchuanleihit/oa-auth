@@ -3,18 +3,18 @@
 	<modelVersion>4.0.0</modelVersion>
     <parent>
     	<groupId>com.loukou</groupId>
-    	<artifactId>auth-common-root</artifactId>
     	<version>0.1.0-SNAPSHOT</version>
- 	</parent>
+    	<artifactId>oa-auth-root</artifactId>
+    </parent>
 
-	<artifactId>auth-common-web</artifactId>
+	<artifactId>oa-auth-web</artifactId>
 	<packaging>war</packaging>
 	
 	<dependencies>
 		<!-- auth-common-impl --> 
 		<dependency>
 	      <groupId>${project.groupId}</groupId>
-	      <artifactId>auth-common-impl</artifactId>
+	      <artifactId>oa-auth-service</artifactId>
 	      <version>${project.version}</version>
 	    </dependency>
 	    

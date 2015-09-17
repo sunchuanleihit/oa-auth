@@ -1,129 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.loukou</groupId>
-    <artifactId>auth-common-root</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>auth-common-impl</artifactId>
-  <packaging>war</packaging>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.eclipse.jetty</groupId>
-        <artifactId>jetty-maven-plugin</artifactId>
-        <version>9.2.7.v20150116</version>
-        <configuration>
-          <contextPath>/</contextPath>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-
-  <dependencies>
-        <dependency>
-        	<groupId>${project.groupId}</groupId>
-        	<artifactId>auth-common-api</artifactId>
-        	<version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        
-	<dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
 		<groupId>com.loukou</groupId>
-		<artifactId>sms-sdk</artifactId>
-		<version>0.1.1-SNAPSHOT</version>
-	</dependency>
-  
-  	<!-- dubbo-ext -->
-  	<dependency>
-		<groupId>com.serverstarted</groupId>
-		<artifactId>dubbo-ext</artifactId>
-	</dependency>
-	<!-- cat-ext -->
-	<dependency>
-		<groupId>com.serverstarted</groupId>
-		<artifactId>cat-ext</artifactId>
-		<version>0.2.0</version>
-	</dependency>
-	
-    <!-- Redis -->
-    <dependency>
-  		<groupId>org.springframework.data</groupId>
-  		<artifactId>spring-data-redis</artifactId>
-  		<version>1.5.0.RELEASE</version>
-  	</dependency>
-  	<dependency>
-  		<groupId>redis.clients</groupId>
-  		<artifactId>jedis</artifactId>
-  	</dependency>
-  	
-  	<dependency>
-  		<groupId>commons-lang</groupId>
-  		<artifactId>commons-lang</artifactId>
-  	</dependency> 
-  	
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-webapp</artifactId>
-      <version>9.2.4.v20141103</version>
-      <scope>test</scope>
-    </dependency>
+		<artifactId>oa-auth-root</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>oa-auth-service</artifactId>
+	<packaging>war</packaging>
 
-    <dependency>
-      <groupId>org.springframework.data</groupId>
-      <artifactId>spring-data-jpa</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate.javax.persistence</groupId>
-      <artifactId>hibernate-jpa-2.0-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>druid</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-    </dependency>
-    <!-- httpclient -->
-    <dependency>
-		<groupId>commons-httpclient</groupId>
-		<artifactId>commons-httpclient</artifactId>
-		<version>3.1</version> 
-	</dependency>
-	
-	<!--  配置服务 -->
-	<dependency>
-		<groupId>com.github.diamond</groupId>
-		<artifactId>super-diamond-client</artifactId>
-		<version>1.0.1</version>
-	</dependency>
-  </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>oa-auth-api</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.loukou</groupId>
+			<artifactId>sms-sdk</artifactId>
+			<version>0.1.1-SNAPSHOT</version>
+		</dependency>
+
+
+
+		<!-- Redis -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+			<version>1.5.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>9.2.4.v20141103</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<!-- httpclient -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
+
+		<!-- 配置服务 -->
+		<dependency>
+			<groupId>com.github.diamond</groupId>
+			<artifactId>super-diamond-client</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+	</dependencies>
 </project>
