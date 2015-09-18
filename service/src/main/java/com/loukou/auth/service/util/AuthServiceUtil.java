@@ -61,13 +61,4 @@ public final class AuthServiceUtil {
 		return new String(result);
 	}
 
-	public static void main(String[] args) {
-		String encrypted = encrypt("12345678", "12345678");
-
-		System.out.println(encrypted);
-
-		String decrypted = decrypt(encrypted, "12345678");
-
-		System.out.println(decrypted);
-	}
 }

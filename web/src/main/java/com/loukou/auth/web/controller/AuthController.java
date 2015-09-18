@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.loukou.auth.api.AuthService;
+import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.entity.AppEntity;
 import com.loukou.auth.service.impl.AppService;
 
@@ -18,7 +18,7 @@ import com.loukou.auth.service.impl.AppService;
 public class AuthController extends BaseController {
 
 	@Autowired
-	private AuthService authService;
+	private UserService userService;
 
 	@Autowired
 	private AppService appService;
@@ -59,24 +59,29 @@ public class AuthController extends BaseController {
 				&& StringUtils.isNotEmpty(password)
 				&& StringUtils.isNotEmpty(appId)
 				&& StringUtils.isNumeric(appId)) {
-			String token = authService.login(userName, password);
+			String token = userService.login(userName, password);
 			if (token != null) {
 				AppEntity app = appService.getApp(Integer.valueOf(appId));
 				if (app != null
 						&& StringUtils.isNotEmpty(app.getDomainPrefix())) {
-					StringBuilder sb = new StringBuilder("redirect:http://");
-					sb.append(app.getDomainPrefix());
-					sb.append(domainSuffix);
-					sb.append("/dologin?");
-					sb.append(PARAMETER_TOKEN);
-					sb.append("=");
-					sb.append(token);
-					return sb.toString();
+
+					return getRedirectUrl(app.getDomainPrefix(), token);
 				}
 			}
 		}
 
 		return "error";
+	}
+
+	private String getRedirectUrl(String prefix, String token) {
+		StringBuilder sb = new StringBuilder("redirect:http://");
+		sb.append(prefix);
+		sb.append(domainSuffix);
+		sb.append("/dologin?");
+		sb.append(PARAMETER_TOKEN);
+		sb.append("=");
+		sb.append(token);
+		return sb.toString();
 	}
 
 	/**

@@ -21,6 +21,9 @@ public class UserRoleEntity {
 	@Column(name = "role_id")
 	private int roleId;
 
+	@Column(name = "app_id")
+	private int appId;
+
 	public int getId() {
 		return id;
 	}
@@ -43,6 +46,14 @@ public class UserRoleEntity {
 
 	public void setRoleId(int roleId) {
 		this.roleId = roleId;
+	}
+
+	public int getAppId() {
+		return appId;
+	}
+
+	public void setAppId(int appId) {
+		this.appId = appId;
 	}
 
 }

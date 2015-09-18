@@ -8,5 +8,5 @@ import com.loukou.auth.service.entity.RoleEntity;
 
 public interface RoleDao extends CrudRepository<RoleEntity, Integer> {
 
-	List<RoleEntity> findByIds(List<Integer> ids);
+	List<RoleEntity> findById(List<Integer> ids);
 }

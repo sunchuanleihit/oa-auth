@@ -179,6 +179,11 @@
 			<artifactId>diamond-wrapper</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.serverstarted</groupId>
+			<artifactId>cat-ext</artifactId>
+			<version>0.2.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
