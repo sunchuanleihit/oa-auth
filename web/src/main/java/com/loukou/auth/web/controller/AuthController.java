@@ -40,6 +40,7 @@ public class AuthController extends BaseController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("login");
 		mv.addObject("appId", appId);
+		mv.addObject("app", "后台");
 		return mv;
 	}
 

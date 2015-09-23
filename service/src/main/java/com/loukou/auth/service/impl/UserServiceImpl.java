@@ -1,6 +1,7 @@
 package com.loukou.auth.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -114,5 +115,18 @@ public class UserServiceImpl implements UserService {
 		sb.append(SEPARATOR);
 		sb.append(userId);
 		return AuthServiceUtil.encrypt(sb.toString(), this.desKey);
+	}
+
+	@Override
+	public void createUser(UserBo user) {
+		UserEntity entity = new UserEntity();
+		entity.setEmail(user.getEmail());
+		entity.setRealName(user.getName());
+		entity.setCreateTime(new Date());
+	}
+
+	@Override
+	public void assignRole(int userId, List<RoleBo> roles) {
+		
 	}
 }

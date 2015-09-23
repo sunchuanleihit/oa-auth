@@ -60,5 +60,6 @@
   	<module>service</module>
   	<module>web</module>
   	<module>dubbo</module>
+  	<module>auth-lib</module>
   </modules>
 </project>

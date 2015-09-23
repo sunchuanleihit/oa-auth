@@ -13,8 +13,17 @@
 	   		<div class="row">
 				<div class="col-md-4 col-md-offset-4">
 					<center>
+						<img src="<@spring.url '/assets/images/logo.png' />" />
+					</center>
+				</div>
+				<div class="col-md-4">
+				</div>
+			</div>
+	   		<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<center>
 						<h1>
-							后台系统
+							${app}系统
 						</h1>
 					</center>
 				</div>
