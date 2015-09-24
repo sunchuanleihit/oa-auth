@@ -26,6 +26,6 @@
 
 	<!-- 声明需要暴露的服务接口 -->
 	<dubbo:service interface="com.loukou.auth.api.AuthService"
-		ref="oa-auth-service" retries="0" timeout="200" />
+		ref="oa-auth-service" retries="0" timeout="5000" />
 
 </beans>
