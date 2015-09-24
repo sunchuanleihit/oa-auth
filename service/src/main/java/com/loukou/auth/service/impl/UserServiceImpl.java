@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
 			if (userRoles != null && userRoles.size() > 0) {
 				List<Integer> roleIds = new ArrayList<Integer>(userRoles.size());
 				for (int i = 0; i < userRoles.size(); ++i) {
-					roleIds.add(userRoles.get(i).getId());
+					roleIds.add(userRoles.get(i).getRoleId());
 				}
 
 				List<RoleEntity> roles = roleDao.findById(roleIds);

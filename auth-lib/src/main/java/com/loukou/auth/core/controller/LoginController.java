@@ -42,6 +42,7 @@ public class LoginController {
 			authInfo.setRoles(resp.getData().getRoles());
 			request.getSession().setAttribute(configLoader.getSessionKey(),
 					authInfo);
+			
 
 			return "redirect:/";
 		} else {
