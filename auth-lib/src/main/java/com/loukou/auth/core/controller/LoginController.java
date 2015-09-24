@@ -45,7 +45,7 @@ public class LoginController {
 
 			return "redirect:/";
 		} else {
-			return "redirect:";
+			return "redirect:" + configLoader.getLoginUrl();
 		}
 	}
 }

@@ -11,23 +11,14 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-	<mvc:annotation-driven />
-	<context:component-scan base-package="com.loukou.auth.core">
-	</context:component-scan>
 
-	<!-- 登录验证 -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/assets/**" />
-			<bean class="com.loukou.auth.core.interceptor.AuthInterceptor">
-
-			</bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
 
 	<bean id="env.domain" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="${env.domain}" />
+	</bean>
+	
+	<bean id="cas.url" class="java.lang.String">
+		<constructor-arg type="java.lang.String" value="${cas.url}" />
 	</bean>
 
 	<dubbo:reference interface="com.loukou.auth.api.AuthService"

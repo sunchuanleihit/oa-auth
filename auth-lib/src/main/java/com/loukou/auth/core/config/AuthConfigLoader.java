@@ -1,9 +1,7 @@
 package com.loukou.auth.core.config;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -21,7 +19,7 @@ public class AuthConfigLoader {
 	private static final String KEY_APPID = "appid";
 	private static final String APP_NAME = "app.name";
 	private static final String SESSION_KEY = "AUTH_INFO_";
-	private static final String LOGIN_URL_FORMAT = "http://cas.%s/login?appid=%s";
+	private static final String LOGIN_URL_FORMAT = "http://%s/login?appid=%s";
 
 	private int appId;
 
@@ -30,6 +28,10 @@ public class AuthConfigLoader {
 	private String sessionKey;
 
 	private String loginUrl;
+
+	@Resource(name = "cas.url")
+	private String casUrl;
+	
 
 	@Resource(name = "env.domain")
 	private String domain;
@@ -53,7 +55,7 @@ public class AuthConfigLoader {
 				this.appId = Integer.valueOf(appIdValue);
 				this.appName = appName;
 				this.sessionKey = SESSION_KEY + appName;
-				this.loginUrl = String.format(LOGIN_URL_FORMAT, domain, appId);
+				this.loginUrl = String.format(LOGIN_URL_FORMAT, casUrl, appId);
 			} else {
 				throw new AuthRuntimeException(
 						"param appid or app.name in /META-INF/app.properties is not set properly");
@@ -68,20 +70,6 @@ public class AuthConfigLoader {
 				}
 			}
 		}
-	}
-
-	private static URL loadFromClassPath(String file) throws IOException {
-		URL url = Thread.currentThread().getContextClassLoader()
-				.getResource(file);
-		if (null == url) {
-			url = AuthConfigLoader.class.getResource(file);
-		}
-		if (null == url) {
-			throw new FileNotFoundException("file " + file
-					+ " doesn't exist in classpath");
-		}
-
-		return url;
 	}
 
 	public int getAppId() {
