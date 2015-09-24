@@ -70,8 +70,7 @@ public class UserServiceImpl implements UserService {
 			userBo.setName(user.getRealName());
 			userBo.setStatus(user.getStatus());
 
-			List<UserRoleEntity> userRoles = userRoleDao.findByUserIdAndAppId(
-					userId, appId);
+			List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
 			if (userRoles != null && userRoles.size() > 0) {
 				List<Integer> roleIds = new ArrayList<Integer>(userRoles.size());
 				for (int i = 0; i < userRoles.size(); ++i) {
@@ -81,10 +80,12 @@ public class UserServiceImpl implements UserService {
 				List<RoleEntity> roles = roleDao.findById(roleIds);
 				List<RoleBo> roleBos = new ArrayList<RoleBo>(roles.size());
 				for (int i = 0; i < roles.size(); ++i) {
-					RoleBo role = new RoleBo();
-					role.setId(roles.get(i).getId());
-					role.setRole(roles.get(i).getRole());
-					roleBos.add(role);
+					if (roles.get(i).getAppId() == appId) {
+						RoleBo role = new RoleBo();
+						role.setId(roles.get(i).getId());
+						role.setRole(roles.get(i).getRole());
+						roleBos.add(role);
+					}
 				}
 
 				userBo.setRoles(roleBos);
@@ -127,6 +128,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void assignRole(int userId, List<RoleBo> roles) {
-		
+
 	}
 }
