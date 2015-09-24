@@ -10,7 +10,7 @@ import com.loukou.auth.resp.dto.RespDto;
 import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.dao.UserDao;
 
-@Service
+@Service("oa-auth-service")
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired

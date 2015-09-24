@@ -12,6 +12,7 @@
  http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<context:annotation-config />
 
+	<import resource="classpath*:properties-appcontext.xml" />
 	<import resource="classpath*:oa-auth-service-appcontext.xml" />
 	<import resource="classpath*:dubbo-ext-appcontext.xml" />
 
