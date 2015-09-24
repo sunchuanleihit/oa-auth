@@ -35,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
 				}
 				dto.setRoles(roles);
 			}
+			result.setData(dto);
 		}
 
 		return result;
