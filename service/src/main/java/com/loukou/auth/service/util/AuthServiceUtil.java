@@ -50,15 +50,34 @@ public final class AuthServiceUtil {
 	public static String encrypt(String content, String key) {
 		byte[] bytes = operate(content.getBytes(), key, true);
 		String base64Str = Base64.encodeBase64String(bytes);
-		String result = base64Str.substring(0,
-				base64Str.length() - BASE64_TAG.length());
+		//String result = base64Str.substring(0,base64Str.length() - BASE64_TAG.length());
+		String result = base64Str;
 		return result;
 	}
 
 	public static String decrypt(String content, String key) {
-		byte[] rawContent = Base64.decodeBase64(content + BASE64_TAG);
+		//byte[] rawContent = Base64.decodeBase64(content + BASE64_TAG);
+		byte[] rawContent = Base64.decodeBase64(content);
 		byte[] result = operate(rawContent, key, false);
 		return new String(result);
 	}
+	
+	
+	
+	public static void main(String[] args) {
+		
+		String origin = "123456";
+		
+		//System.out.println("Origin: " + origin);
+		//String enc = encrypt(origin, "12345678");
+		//System.out.println("enc: " + enc);
+		String dec = decrypt("1v+rZQAxdvxydqk1HZgtmQ==", "12345678");
+		System.out.println("dec: " + dec);
+		
+	}
+	
+	
+	
+	
 
 }

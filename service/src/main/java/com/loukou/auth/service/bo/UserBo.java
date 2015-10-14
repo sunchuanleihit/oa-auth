@@ -15,6 +15,8 @@ public class UserBo {
 	private int status;
 
 	private List<RoleBo> roles;
+	
+
 
 	public String getName() {
 		return name;

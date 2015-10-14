@@ -14,6 +14,9 @@ public class AuthInfo implements Serializable {
 	private String userName;
 
 	private List<String> roles;
+	
+	private List<String> privileges;
+	
 
 	public int getUserId() {
 		return userId;
@@ -38,4 +41,14 @@ public class AuthInfo implements Serializable {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+	public List<String> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(List<String> privileges) {
+		this.privileges = privileges;
+	}
+	
+	
 }

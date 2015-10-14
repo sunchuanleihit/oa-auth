@@ -20,5 +20,9 @@
 	<bean id="domain.suffix" class="java.lang.String">
 		<constructor-arg value="${domain.suffix}" />
 	</bean>
+	
+	<bean id="domain.port" class="java.lang.String">
+		<constructor-arg value="${domain.port}" />
+	</bean>
 
 </beans>

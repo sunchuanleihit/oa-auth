@@ -23,6 +23,9 @@ public class RoleEntity {
 
 	@Column(name = "role_key")
 	private String role;
+	
+	@Column(name = "privilege")
+	private String privilege;
 
 	public int getId() {
 		return id;
@@ -55,4 +58,14 @@ public class RoleEntity {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	public String getPrivilege() {
+		return privilege;
+	}
+
+	public void setPrivilege(String privilege) {
+		this.privilege = privilege;
+	}
+	
+	
 }

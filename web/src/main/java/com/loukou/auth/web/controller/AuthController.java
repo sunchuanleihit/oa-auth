@@ -1,5 +1,8 @@
 package com.loukou.auth.web.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,6 +28,9 @@ public class AuthController extends BaseController {
 
 	@Resource(name = "domain.suffix")
 	private String domainSuffix;
+	
+	@Resource(name = "domain.port")
+	private String domainPort;
 
 	private static final String PARAMETER_TOKEN = "castk";
 
@@ -78,10 +84,17 @@ public class AuthController extends BaseController {
 		StringBuilder sb = new StringBuilder("redirect:http://");
 		sb.append(prefix);
 		sb.append(domainSuffix);
+		sb.append(":");
+		sb.append(domainPort);
 		sb.append("/dologin?");
 		sb.append(PARAMETER_TOKEN);
 		sb.append("=");
-		sb.append(token);
+		try {
+			sb.append(URLEncoder.encode(token, "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return sb.toString();
 	}
 

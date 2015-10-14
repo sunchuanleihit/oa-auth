@@ -29,8 +29,12 @@ public class LoginController {
 
 	@RequestMapping(value = "/dologin", method = RequestMethod.GET)
 	public String login(@RequestParam("castk") String token) {
+		
+	
 		RespDto<AuthUserDto> resp = authService.validateToken(
 				configLoader.getAppId(), token);
+		
+		
 
 		if (resp != null
 				&& resp.getData() != null
@@ -40,8 +44,11 @@ public class LoginController {
 			authInfo.setUserId(resp.getData().getUserId());
 			authInfo.setUserName(resp.getData().getName());
 			authInfo.setRoles(resp.getData().getRoles());
+			authInfo.setPrivileges(resp.getData().getPrivileges());
+			
 			request.getSession().setAttribute(configLoader.getSessionKey(),
 					authInfo);
+			
 			
 
 			return "redirect:/";

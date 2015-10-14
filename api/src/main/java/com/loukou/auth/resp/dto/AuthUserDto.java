@@ -12,6 +12,8 @@ public class AuthUserDto implements Serializable {
 	private String name;
 
 	private List<String> roles;
+	
+	private List<String> privileges;
 
 	public int getUserId() {
 		return userId;
@@ -36,5 +38,15 @@ public class AuthUserDto implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public List<String> getPrivileges() {
+		return privileges;
+	}
+
+	public void setPrivileges(List<String> privileges) {
+		this.privileges = privileges;
+	}
+	
+	
 
 }

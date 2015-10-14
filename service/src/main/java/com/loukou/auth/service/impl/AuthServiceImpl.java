@@ -30,10 +30,15 @@ public class AuthServiceImpl implements AuthService {
 			dto.setUserId(user.getId());
 			if (user.getRoles() != null) {
 				List<String> roles = new ArrayList<String>();
+				List<String> privileges = new ArrayList<String>();
+				
 				for (int i = 0; i < user.getRoles().size(); ++i) {
 					roles.add(user.getRoles().get(i).getRole());
+					privileges.addAll(user.getRoles().get(i).getPrivileges());
 				}
+				
 				dto.setRoles(roles);
+				dto.setPrivileges(privileges);
 			}
 			result.setData(dto);
 		}

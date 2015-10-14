@@ -14,5 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface AuthCheck {
 
-	String[] roles();
+	//String[] roles() default {};
+	String[] privileges();
+	boolean isRedirect() default true;
 }

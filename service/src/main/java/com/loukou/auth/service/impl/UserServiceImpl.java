@@ -69,8 +69,10 @@ public class UserServiceImpl implements UserService {
 			userBo.setId(user.getId());
 			userBo.setName(user.getRealName());
 			userBo.setStatus(user.getStatus());
-
+			
+			// 获取用户角色
 			List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
+			
 			if (userRoles != null && userRoles.size() > 0) {
 				List<Integer> roleIds = new ArrayList<Integer>(userRoles.size());
 				for (int i = 0; i < userRoles.size(); ++i) {
@@ -79,11 +81,23 @@ public class UserServiceImpl implements UserService {
 
 				List<RoleEntity> roles = roleDao.findById(roleIds);
 				List<RoleBo> roleBos = new ArrayList<RoleBo>(roles.size());
+				
+				//遍历用户所属
 				for (int i = 0; i < roles.size(); ++i) {
 					if (roles.get(i).getAppId() == appId) {
 						RoleBo role = new RoleBo();
 						role.setId(roles.get(i).getId());
 						role.setRole(roles.get(i).getRole());
+						
+						String privilegeStr = roles.get(i).getPrivilege();
+						List<String> privileges = new ArrayList<String>();
+						if (StringUtils.isNotBlank(privilegeStr)) {
+							String[] privilegeListTemp = privilegeStr.split("\n");
+							if (privilegeListTemp.length > 0) {
+								privileges = java.util.Arrays.asList(privilegeListTemp);
+							}
+						}
+						role.setPrivileges(privileges);
 						roleBos.add(role);
 					}
 				}
