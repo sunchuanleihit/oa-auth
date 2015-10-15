@@ -18,8 +18,8 @@ public class RoleEntity {
 	@Column(name = "app_id")
 	private int appId;
 
-	@Column(name = "desc")
-	private String desc;
+	@Column(name = "name")
+	private String name;
 
 	@Column(name = "role_key")
 	private String role;
@@ -43,12 +43,12 @@ public class RoleEntity {
 		this.appId = appId;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getName() {
+		return name;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getRole() {

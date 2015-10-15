@@ -3,12 +3,21 @@
 <div id="sidebar">
             <div id="sidebar-wrapper">
                 <a href="<@spring.url '#'/>">
-                    <div style="font-size:22px; color: #f1f1f1; padding: 7px;width: 100%; text-align: center; ">楼口运营后台</div>
+                    <div style="font-size:22px; color: #f1f1f1; padding: 7px;width: 100%; text-align: center; ">登陆中心</div>
                 </a>
                 <div id="profile-links">
-                    你好,
-                    <a id="admin_logout_button" href="#">登出</a>
+                    
+                    <a id="admin_logout_button" href="#"></a>
                     <br />
+                    
+             
+	                    <select class="plugin_select" id="app_selector"   data-width="100%"  style="width: 70%;">
+						    	<#list apps as app >
+						    		<option value="${app.id}">${app.name}</option>
+						    	</#list>
+						</select>
+			
+                    
                 </div>
                 <ul id="main-nav">
                 <#list tabs as parentTab>
@@ -29,6 +38,9 @@
         
         <script type="text/javascript">
         $(document).ready(function() {
+        	$(".plugin_select").selectpicker();
+        	
+        
         	$("#admin_logout_button").click(function() {
         		$.ajax( {    
 				    url:'../auth/do_logout',// 跳转到 action    

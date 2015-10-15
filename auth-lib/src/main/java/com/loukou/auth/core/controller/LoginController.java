@@ -13,7 +13,7 @@ import com.loukou.auth.core.config.AuthConfigLoader;
 import com.loukou.auth.core.entity.AuthInfo;
 import com.loukou.auth.enums.AuthResultEnum;
 import com.loukou.auth.resp.dto.AuthUserDto;
-import com.loukou.auth.resp.dto.RespDto;
+import com.loukou.auth.resp.dto.base.RespDto;
 
 @Controller
 public class LoginController {

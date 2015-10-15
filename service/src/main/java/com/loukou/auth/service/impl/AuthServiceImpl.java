@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 import com.loukou.auth.api.AuthService;
 import com.loukou.auth.enums.AuthResultEnum;
 import com.loukou.auth.resp.dto.AuthUserDto;
-import com.loukou.auth.resp.dto.RespDto;
+import com.loukou.auth.resp.dto.base.RespDto;
 import com.loukou.auth.service.UserService;
+import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.UserBo;
 
 @Service("oa-auth-service")
@@ -34,7 +35,9 @@ public class AuthServiceImpl implements AuthService {
 				
 				for (int i = 0; i < user.getRoles().size(); ++i) {
 					roles.add(user.getRoles().get(i).getRole());
-					privileges.addAll(user.getRoles().get(i).getPrivileges());
+					for (PrivilegeBo privBo : user.getRoles().get(i).getPrivileges()) {
+						privileges.add(privBo.getPrivKey());
+					}
 				}
 				
 				dto.setRoles(roles);

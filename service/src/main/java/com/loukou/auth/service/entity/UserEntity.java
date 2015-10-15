@@ -22,6 +22,9 @@ public class UserEntity {
 
 	@Column(name = "real_name")
 	private String realName;
+	
+	@Column(name = "department")
+	private String department;
 
 	@Column(name = "password")
 	private String password;
@@ -38,6 +41,16 @@ public class UserEntity {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
 	public String getRealName() {

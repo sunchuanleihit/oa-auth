@@ -1,5 +1,7 @@
 package com.loukou.auth.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +17,10 @@ public class AppService {
 	public AppEntity getApp(int appId) {
 		return appDao.findById(appId);
 	}
+	
+	public List<AppEntity> getAllApps() {
+		return (List<AppEntity>) appDao.findAll();
+	}
+	
+	
 }

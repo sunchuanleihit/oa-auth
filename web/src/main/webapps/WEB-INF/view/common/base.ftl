@@ -56,7 +56,7 @@
                         $(this).addClass("current").parents('.menu').find('.nav-top-item').addClass('current');
                         
                         var url = $(this).attr("simu_href");
-                        loadPage(url);
+                        loadFirstPage(url);
                         return false;
                     });
                 });

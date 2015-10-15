@@ -1,4 +1,4 @@
-package com.loukou.auth.resp.dto;
+package com.loukou.auth.resp.dto.base;
 
 import java.io.Serializable;
 

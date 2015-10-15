@@ -1,7 +1,7 @@
 package com.loukou.auth.api;
 
 import com.loukou.auth.resp.dto.AuthUserDto;
-import com.loukou.auth.resp.dto.RespDto;
+import com.loukou.auth.resp.dto.base.RespDto;
 
 public interface AuthService {
 

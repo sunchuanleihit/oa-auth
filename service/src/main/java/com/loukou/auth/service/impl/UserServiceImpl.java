@@ -2,16 +2,26 @@ package com.loukou.auth.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import com.loukou.auth.resp.dto.base.RespPageDto;
 import com.loukou.auth.service.UserService;
+import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
 import com.loukou.auth.service.bo.UserBo;
 import com.loukou.auth.service.dao.RoleDao;
@@ -21,6 +31,7 @@ import com.loukou.auth.service.entity.RoleEntity;
 import com.loukou.auth.service.entity.UserEntity;
 import com.loukou.auth.service.entity.UserRoleEntity;
 import com.loukou.auth.service.util.AuthServiceUtil;
+import com.loukou.auth.service.util.PrivilegeUtil;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -90,14 +101,16 @@ public class UserServiceImpl implements UserService {
 						role.setRole(roles.get(i).getRole());
 						
 						String privilegeStr = roles.get(i).getPrivilege();
-						List<String> privileges = new ArrayList<String>();
-						if (StringUtils.isNotBlank(privilegeStr)) {
-							String[] privilegeListTemp = privilegeStr.split("\n");
-							if (privilegeListTemp.length > 0) {
-								privileges = java.util.Arrays.asList(privilegeListTemp);
-							}
+						List<String> privKeys = PrivilegeUtil.parsePrivKeys(privilegeStr);
+						
+						List<PrivilegeBo> privBos = new ArrayList<PrivilegeBo>();
+						for (String privKey : privKeys) {
+							PrivilegeBo privBo = new PrivilegeBo();
+							privBo.setPrivKey(privKey);
+							privBos.add(privBo);
 						}
-						role.setPrivileges(privileges);
+						
+						role.setPrivileges(privBos);
 						roleBos.add(role);
 					}
 				}
@@ -143,5 +156,102 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void assignRole(int userId, List<RoleBo> roles) {
 
+	}
+
+	@Override
+	public RespPageDto<UserBo> getUsers(int pageNum, int pageSize) {
+		
+		List<UserBo> userBos = new ArrayList<UserBo>();
+			
+		if (pageNum < 1 || pageSize < 1) {
+			return new RespPageDto<UserBo>(0, userBos);
+		}
+		
+		Pageable page = new PageRequest(pageNum - 1, pageSize);
+		Page<UserEntity> usersPage = userDao.findAll(page);
+		
+		List<UserEntity> users = usersPage.getContent();
+		
+		if (!CollectionUtils.isEmpty(users)) {
+			for (UserEntity user : users) {
+				UserBo userBo = new UserBo();
+				userBo.setId(user.getId());
+				userBo.setEmail(user.getEmail());
+				userBo.setDepartment(user.getDepartment());
+				userBo.setName(user.getRealName());
+				userBos.add(userBo);
+			} 
+		} 
+	
+		return new RespPageDto<UserBo>(usersPage.getTotalElements(), userBos);
+	}
+
+	@Override
+	public RespPageDto<UserBo> getUsersWithRole(int appId, int pageNum, int pageSize) {
+		
+		List<UserBo> userBos = new ArrayList<UserBo>();
+		
+		List<RoleEntity> roleEntitys = roleDao.findByAppId(appId);
+		
+		if (CollectionUtils.isEmpty(roleEntitys)) {
+			return new RespPageDto<UserBo>(0, userBos);
+		}
+		
+		List<Integer> roleIds = new ArrayList<Integer>();
+		Map<Integer, RoleEntity> roleMap = new HashMap<Integer, RoleEntity>();
+		
+		for (RoleEntity roleEntity : roleEntitys) {
+			roleIds.add(roleEntity.getId());
+			roleMap.put(roleEntity.getId(), roleEntity);
+		}
+		
+		List<UserRoleEntity> userRoles = userRoleDao.findByRoleIds(roleIds);
+		if (CollectionUtils.isEmpty(userRoles)) {
+			return new RespPageDto<UserBo>(0, userBos);
+		}
+		
+		List<Integer> userIds = new ArrayList<Integer>();
+		Map<Integer, List<RoleEntity>> userRoleMap = new HashMap<Integer, List<RoleEntity>>();
+		
+		for (UserRoleEntity userRole : userRoles) {
+			int userId = userRole.getUserId();
+			if (!userIds.contains(userId)) {
+				userIds.add(userId);
+			}
+			if (!userRoleMap.containsKey(userId)) {
+				userRoleMap.put(userId, new ArrayList<RoleEntity>());
+			}
+			userRoleMap.get(userId).add(roleMap.get(userRole.getRoleId()));
+		}
+		
+		
+		Pageable page = new PageRequest(pageNum - 1, pageSize);
+		Page<UserEntity> userEntitiesPage = userDao.findById(userIds, page);
+		
+		List<UserEntity> users = userEntitiesPage.getContent();
+		
+		for (UserEntity user : users) {
+			UserBo userBo = new UserBo();
+			userBo.setId(user.getId());
+			userBo.setEmail(user.getEmail());
+			userBo.setDepartment(user.getDepartment());
+			userBo.setName(user.getRealName());
+			
+			List<RoleEntity> roles = userRoleMap.get(user.getId());
+			List<RoleBo> roleBos = new ArrayList<RoleBo>();
+			
+			if (!CollectionUtils.isEmpty(roles)) {
+				for (RoleEntity role : roles) {
+					RoleBo roleBo = new RoleBo();
+					roleBo.setName(role.getName());
+					roleBos.add(roleBo);
+				}
+			}
+			
+			userBo.setRoles(roleBos);
+			userBos.add(userBo);
+		}
+		
+		return new RespPageDto<UserBo>(userEntitiesPage.getTotalElements(), userBos);
 	}
 }

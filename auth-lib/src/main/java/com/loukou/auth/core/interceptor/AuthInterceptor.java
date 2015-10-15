@@ -1,7 +1,5 @@
 package com.loukou.auth.core.interceptor;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +14,7 @@ import com.loukou.auth.core.annotation.AuthCheck;
 import com.loukou.auth.core.config.AuthConfigLoader;
 import com.loukou.auth.core.entity.AuthInfo;
 import com.loukou.auth.core.util.JsonUtil;
-import com.loukou.auth.resp.dto.RespPureDto;
+import com.loukou.auth.resp.dto.base.RespPureDto;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter {
 

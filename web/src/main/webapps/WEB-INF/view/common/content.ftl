@@ -1,5 +1,5 @@
 <#macro page title>
-<div id="main" class="main_wrapper" style="margin-left: 238px; padding: 10px; background: #ffffff;"></div>
+<div id="main1" class="main_wrapper" style="margin-left: 238px; padding: 10px; background: #ffffff;"></div>
 <div id="main2" class="main_wrapper"  style="margin-left: 238px; padding: 10px; background: #ffffff;"></div>
 <div id="main3" class="main_wrapper"  style="margin-left: 238px; padding: 10px; background: #ffffff;"></div>
 <div id="main4" class="main_wrapper"  style="margin-left: 238px; padding: 10px; background: #ffffff;"></div>
@@ -16,18 +16,12 @@
 gPageIndex = 1;
 
 function popPageStack() {
-	var suffix = "";
-	if (gPageIndex > 2) {
-		gPageIndex -= 1;
-		suffix = gPageIndex;
-	} else if (gPageIndex == 2) {
-		gPageIndex -= 1;
-		suffix = "";
-	} else {
+	gPageIndex -= 1;
+	if (gPageIndex < 1) {
 		gPageIndex = 1;
 	}
 	$('.main_wrapper').hide();
-	$("#main" + suffix).show();
+	$("#main" + gPageIndex).show();
 }
 
 
@@ -49,15 +43,23 @@ function pushPageStack(url) {
 }
 
 
-
-function showPage() {
-	gPageIndex = 1;
-	$(".main_wrapper").hide();
-	$('#main').show();
+function loadCurrentPage(url) {
+	$.ajax({
+	   type: "get",
+	   url: url,
+	   async : false,
+	   success: function(data, textStatus){
+	   	  $(".main_wrapper").hide();
+	      $('#main' + gPageIndex).html(data);
+	      $('#main' + gPageIndex).show();
+	      
+	   }
+	});
 }
 
 
-function loadPage(url) {
+
+function loadFirstPage(url) {
 	$.ajax({
 	   type: "get",
 	   url: url,
@@ -65,34 +67,15 @@ function loadPage(url) {
 	   success: function(data, textStatus){
 	   	  gPageIndex = 1;
 	   	  $(".main_wrapper").hide();
-	      $('#main').html(data);
-	      $('#main').show();
+	      $('#main' + gPageIndex).html(data);
+	      $('#main' + gPageIndex).show();
 	      
 	   }
 	});
 }
 
 
-function showPage2() {
-	$('.main_wrapper').hide();
-	$("#main2").show();
-}
 
-
-
-function loadPage2(url) {
-	$.ajax({
-	   type: "get",
-	   url: url,
-	   async : false,
-	   success: function(data, textStatus){
-	   		$(".main_wrapper").hide();
-	   		$("#main2").html(data);
-	   		$("#main2").show();
-	   		
-	   }
-	});
-}
 
 
 </script>

@@ -15,8 +15,8 @@ public class AppEntity {
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "desc")
-	private String desc;
+	@Column(name = "name")
+	private String name;
 
 	@Column(name = "domain_prefix")
 	private String domainPrefix;
@@ -29,12 +29,12 @@ public class AppEntity {
 		this.id = id;
 	}
 
-	public String getDesc() {
-		return desc;
+	public String getName() {
+		return name;
 	}
 
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDomainPrefix() {
