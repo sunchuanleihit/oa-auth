@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -17,9 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.loukou.auth.resp.dto.base.RespPageDto;
+import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
@@ -145,12 +148,18 @@ public class UserServiceImpl implements UserService {
 		return AuthServiceUtil.encrypt(sb.toString(), this.desKey);
 	}
 
+	@Transactional(value="transactionManager")
 	@Override
-	public void createUser(UserBo user) {
+	public RespPureDto createUser(UserBo user) {
 		UserEntity entity = new UserEntity();
 		entity.setEmail(user.getEmail());
 		entity.setRealName(user.getName());
+		entity.setDepartment(user.getDepartment());
+		entity.setPassword(DigestUtils.md5Hex(user.getEmail()));
 		entity.setCreateTime(new Date());
+		userDao.save(entity);
+		
+		return new RespPureDto(200, "用户创建成功！");
 	}
 
 	@Override
@@ -226,7 +235,7 @@ public class UserServiceImpl implements UserService {
 		
 		
 		Pageable page = new PageRequest(pageNum - 1, pageSize);
-		Page<UserEntity> userEntitiesPage = userDao.findById(userIds, page);
+		Page<UserEntity> userEntitiesPage = userDao.findByIds(userIds, page);
 		
 		List<UserEntity> users = userEntitiesPage.getContent();
 		
@@ -253,5 +262,101 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return new RespPageDto<UserBo>(userEntitiesPage.getTotalElements(), userBos);
+	}
+
+	@Override
+	public RespPageDto<UserBo> getUsersNotInApp(int appId, int pageNum, int pageSize) {
+		
+		
+		List<UserBo> userBos = new ArrayList<UserBo>();
+		
+		List<RoleEntity> roleEntitys = roleDao.findByAppId(appId);
+		
+		List<Integer> roleIds = new ArrayList<Integer>();
+		
+		Map<Integer, RoleEntity> roleMap = new HashMap<Integer, RoleEntity>();
+		if (!CollectionUtils.isEmpty(roleEntitys)) {
+			for (RoleEntity roleEntity : roleEntitys) {
+				roleIds.add(roleEntity.getId());
+				roleMap.put(roleEntity.getId(), roleEntity);
+			}
+		}
+		
+		List<UserRoleEntity> userRoles = userRoleDao.findByRoleIds(roleIds);
+		Map<Integer, List<RoleEntity>> userRoleMap = new HashMap<Integer, List<RoleEntity>>();
+		List<Integer> userIds = new ArrayList<Integer>();
+		
+		if (!CollectionUtils.isEmpty(userRoles)) {
+			for (UserRoleEntity userRole : userRoles) {
+				int userId = userRole.getUserId();
+				if (!userIds.contains(userId)) {
+					userIds.add(userId);
+				}
+				if (!userRoleMap.containsKey(userId)) {
+					userRoleMap.put(userId, new ArrayList<RoleEntity>());
+				}
+				userRoleMap.get(userId).add(roleMap.get(userRole.getRoleId()));
+			}
+		}
+		
+		
+		Pageable page = new PageRequest(pageNum - 1, pageSize);
+		
+		Page<UserEntity> userEntitiesPage;
+		
+		if (CollectionUtils.isEmpty(userIds)) {
+			userEntitiesPage = userDao.findAll(page);
+		} else {
+			userEntitiesPage = userDao.findByNotInIds(userIds, page);
+		}
+		
+		List<UserEntity> users = userEntitiesPage.getContent();
+		
+		for (UserEntity user : users) {
+			UserBo userBo = new UserBo();
+			userBo.setId(user.getId());
+			userBo.setEmail(user.getEmail());
+			userBo.setDepartment(user.getDepartment());
+			userBo.setName(user.getRealName());
+			userBos.add(userBo);
+		}		
+		
+		return new RespPageDto<UserBo>(userEntitiesPage.getTotalElements(), userBos);
+	}
+
+	@Transactional(value="transactionManager")
+	@Override
+	public RespPureDto addUserRoleForApp(int appId, List<Integer> userIds, List<Integer> roleIds) {
+		
+		if (CollectionUtils.isEmpty(userIds)) {
+			return new RespPureDto(204, "userId为空！");
+		}
+		if (CollectionUtils.isEmpty(roleIds)) {
+			return new RespPureDto(204, "roleId为空！");
+		}
+		
+		List<Integer> appIds = roleDao.findAppIdById(roleIds);
+		Set<Integer> appIdsSet = new HashSet<Integer>(appIds);
+		
+		if (CollectionUtils.isEmpty(appIdsSet)) {
+			return new RespPureDto(204, "roleIds对应app为空！");
+		}
+		if (appIdsSet.size() > 1) {
+			return new RespPureDto(204, "roleIds对应多个app！");
+		}
+		if (appIds.get(0) != appId) {
+			return new RespPureDto(204, "传入角色对应的app与当前app不一致！");
+		}
+		
+		for (Integer userId : userIds) {
+			for (Integer roleId : roleIds) {
+				UserRoleEntity userRole = new UserRoleEntity();
+				userRole.setRoleId(roleId);
+				userRole.setUserId(userId);
+				userRoleDao.save(userRole);
+			}
+		}
+
+		return new RespPureDto(200, "添加成功！");
 	}
 }

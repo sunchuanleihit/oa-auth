@@ -6,10 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.loukou.auth.resp.dto.base.RespPageDto;
+import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.bo.UserBo;
 import com.loukou.auth.service.entity.AppEntity;
@@ -32,11 +34,37 @@ public class UserController {
 	@RequestMapping(value = "/role")
 	public String role(
 			) {
-		
-		
-
 		return "user/role";
 	}
+	
+	
+	@RequestMapping(value = "/create")
+	@ResponseBody
+	public RespPureDto create(
+			@RequestParam(value="name") String name,
+			@RequestParam(value="email") String email,
+			@RequestParam(value="department") String department
+			) {
+		UserBo userBo = new UserBo();
+		userBo.setEmail(email);
+		userBo.setDepartment(department);
+		userBo.setName(name);
+		
+		return userService.createUser(userBo);
+	}
+	
+	
+	@RequestMapping(value = "/addUserRoleForApp", method = RequestMethod.PUT )
+	@ResponseBody
+	public RespPureDto create(
+			@RequestParam(value="appId") int appId,
+			@RequestParam(value="userId[]") List<Integer> userIds,
+			@RequestParam(value="roleId[]") List<Integer> roleIds
+			) {
+		
+		return userService.addUserRoleForApp(appId, userIds, roleIds);
+	}
+	
 	
 	
 	@RequestMapping(value = "/list")
@@ -56,6 +84,27 @@ public class UserController {
 		return userService.getUsers(pageNum + 1, pageSize);
 	}
 	
+	
+	@RequestMapping(value = "/listNotInApp")
+	@ResponseBody
+	public RespPageDto<UserBo> listNotInApp(
+			@RequestParam(value="appId") int appId,
+			@RequestParam(value="limit") int limit,
+			@RequestParam(value="offset") int offset
+			) {
+		
+		int pageNum = 0;
+		int pageSize = 10;
+		
+		if (limit > 0 && offset >= 0) {
+			pageSize = limit;
+			pageNum = offset / limit;
+		}
+		
+		return userService.getUsersNotInApp(appId, pageNum + 1, pageSize);
+	}
+	
+
 	@RequestMapping(value = "/listWithRole")
 	@ResponseBody
 	public RespPageDto<UserBo> listWithRole(

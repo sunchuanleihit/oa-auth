@@ -31,9 +31,6 @@ public class RoleController {
 			@RequestParam(value="appid",required=false) String appId,
 			Model model
 			) {
-		
-		
-		
 		return "role/index";
 	}
 	
@@ -49,7 +46,7 @@ public class RoleController {
 		return "role/detail";
 	}
 	
-	
+
 	
 	@RequestMapping(value = "/rolesByAppId")
 	@ResponseBody

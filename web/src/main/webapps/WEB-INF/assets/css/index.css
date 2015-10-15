@@ -1,3 +1,8 @@
 
 
 .priv_check_span { display:inline-block;  padding: 10px 6px; }
+#all_roles_panel { padding: 12px; }
+#all_roles_panel span { font-weight: 700; font-size: 13px; display: inline-block; padding: 10px; }
+
+#all_users_panel{ padding: 12px; }
+#all_users_panel span { font-weight: 700; font-size: 13px; display: inline-block; padding: 10px; }
