@@ -42,7 +42,7 @@
   	  	  				<#if privilege.status == 1 >
   	  	  					checked="checked" 
   	  	  				</#if>
-  	  	  			    value="${privilege.privKey}" />${privilege.desc}
+  	  	  			    value="${privilege.privKey}" />${privilege.name}
   	  	  		</span>
   	  	  	</#list>
   	  	  </#if>

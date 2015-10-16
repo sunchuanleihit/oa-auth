@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
 					roleIds.add(userRoles.get(i).getRoleId());
 				}
 
-				List<RoleEntity> roles = roleDao.findById(roleIds);
+				List<RoleEntity> roles = roleDao.findByIds(roleIds);
 				List<RoleBo> roleBos = new ArrayList<RoleBo>(roles.size());
 				
 				//遍历用户所属
