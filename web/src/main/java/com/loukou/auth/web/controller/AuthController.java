@@ -49,6 +49,20 @@ public class AuthController extends BaseController {
 		mv.addObject("app", "后台");
 		return mv;
 	}
+	
+	/** 
+	 * 无权限的跳转页面
+	 */
+	@RequestMapping(value = "/no_priv", method = RequestMethod.GET)
+	public ModelAndView noPriv(@RequestParam("appid") String appId) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("no_priv");
+		mv.addObject("appId", appId);
+		mv.addObject("app", "后台");
+		return mv;
+	}
+	
+	
 
 	/**
 	 * 提交登录页面 成功时记录cookie 失败时留着本页面

@@ -57,8 +57,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 					
 					// 已登陆，但是没有权限
 					if (authCheck.isRedirect()) {
-						response.getWriter().write("No Permission");
-						response.flushBuffer();
+						response.sendRedirect(loader.getNoPrivUrl());
 					} else {
 						response.getWriter().write(JsonUtil.objToJsonString(new RespPureDto(402, "No Permission")));
 						response.flushBuffer();

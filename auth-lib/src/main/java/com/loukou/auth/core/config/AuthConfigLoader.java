@@ -20,6 +20,7 @@ public class AuthConfigLoader {
 	private static final String APP_NAME = "app.name";
 	private static final String SESSION_KEY = "AUTH_INFO_";
 	private static final String LOGIN_URL_FORMAT = "http://%s/login?appid=%s";
+	private static final String NO_PRIV_URL_FORMAT = "http://%s/no_priv?appid=%s";
 
 	private int appId;
 
@@ -28,6 +29,8 @@ public class AuthConfigLoader {
 	private String sessionKey;
 
 	private String loginUrl;
+	
+	private String noPrivUrl;
 
 	@Resource(name = "cas.url")
 	private String casUrl;
@@ -56,6 +59,7 @@ public class AuthConfigLoader {
 				this.appName = appName;
 				this.sessionKey = SESSION_KEY + appName;
 				this.loginUrl = String.format(LOGIN_URL_FORMAT, casUrl, appId);
+				this.noPrivUrl = String.format(NO_PRIV_URL_FORMAT, casUrl, appId);
 			} else {
 				throw new AuthRuntimeException(
 						"param appid or app.name in /META-INF/app.properties is not set properly");
@@ -87,4 +91,9 @@ public class AuthConfigLoader {
 	public String getLoginUrl() {
 		return loginUrl;
 	}
+	
+	public String getNoPrivUrl() {
+		return noPrivUrl;
+	}
+	
 }

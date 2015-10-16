@@ -16,5 +16,5 @@ public @interface AuthCheck {
 
 	//String[] roles() default {};
 	String[] privileges();
-	boolean isRedirect() default true;
+	boolean isRedirect() default false;
 }
