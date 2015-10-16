@@ -22,7 +22,7 @@ public class RoleEntity {
 	private String name;
 
 	@Column(name = "role_key")
-	private String role;
+	private String roleKey;
 	
 	@Column(name = "privilege")
 	private String privilege;
@@ -51,12 +51,12 @@ public class RoleEntity {
 		this.name = name;
 	}
 
-	public String getRole() {
-		return role;
+	public String getRoleKey() {
+		return roleKey;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRoleKey(String roleKey) {
+		this.roleKey = roleKey;
 	}
 
 	public String getPrivilege() {

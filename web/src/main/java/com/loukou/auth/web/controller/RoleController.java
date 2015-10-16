@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.bo.RoleBo;
-import com.loukou.auth.service.entity.AppEntity;
 import com.loukou.auth.service.entity.RoleEntity;
-import com.loukou.auth.service.impl.AppService;
 import com.loukou.auth.service.impl.RoleService;
 
 @Controller
@@ -60,6 +58,18 @@ public class RoleController {
 		return roles;
 	}
 	
+	@RequestMapping(value = "/create", method = RequestMethod.POST )
+	@ResponseBody
+	public RespPureDto  update(
+			@RequestParam(value="appId") int appId,
+			@RequestParam(value="name") String name,
+			@RequestParam(value="key") String key
+			) {
+
+		return roleService.create(appId, name, key);
+	}
+	
+	
 	@RequestMapping(value = "/update", method = RequestMethod.PUT )
 	@ResponseBody
 	public RespPureDto  update(
@@ -67,8 +77,6 @@ public class RoleController {
 			@RequestParam(value="name") String name,
 			@RequestParam(value="privKeys[]") List<String> privKeys
 			) {
-		int a = 1;
-		a += 1;
 		return roleService.update(id, name, privKeys);
 	}
 	

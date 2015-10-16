@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import com.loukou.auth.resp.dto.base.RespDto;
 import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
@@ -94,7 +93,7 @@ public class RoleService {
 			roleBo.setAppDesc(appEntity.getName());
 		}
 		
-		roleBo.setRole(roleEntity.getRole());
+		roleBo.setRole(roleEntity.getRoleKey());
 		roleBo.setName(roleEntity.getName());
 		
 		List<PrivilegeBo> privBos = new ArrayList<PrivilegeBo>();
@@ -105,9 +104,9 @@ public class RoleService {
 			PrivilegeBo privBo = new PrivilegeBo();
 			
 			if (privMap.containsKey(privKey)) {// 设置并正确配置的权限
-				privBo.setDesc(privMap.get(privKey).getName());
+				privBo.setName(privMap.get(privKey).getName());
 			} else {// 设置并未正确配置的权限
-				privBo.setDesc(privKey);
+				privBo.setName(privKey);
 			}
 			privBo.setStatus(PrivilegeStatus.INUSE);
 			privBo.setPrivKey(privKey);
@@ -124,7 +123,7 @@ public class RoleService {
 			PrivilegeEntity priv = privMap.get(privKey);
 			
 			PrivilegeBo privBo = new PrivilegeBo();
-			privBo.setDesc(priv.getName());
+			privBo.setName(priv.getName());
 			privBo.setStatus(PrivilegeStatus.NOT_INUSE);
 			privBo.setPrivKey(privKey);
 			privBos.add(privBo);
@@ -134,6 +133,42 @@ public class RoleService {
 		
 		return roleBo;
 	}
+	
+	
+	@Transactional(value="transactionManager")
+	public RespPureDto create(int appId, String name, String key) {
+		
+		if (StringUtils.isEmpty(name)) {
+			return new RespPureDto(204, "角色名不得为空！");
+		}
+		if (StringUtils.isEmpty(key)) {
+			return new RespPureDto(204, "角色标识不得为空！");
+		}
+		
+		AppEntity app = appDao.findById(appId);
+		
+		if (app == null) {
+			return new RespPureDto(400, "相应app不存在！");
+		}
+		
+		RoleEntity role = roleDao.findByRoleKey(key);
+		
+		if (role != null) {
+			return new RespPureDto(400, "角色标识已经存在！");
+		}
+		
+		role = new RoleEntity();
+		role.setAppId(appId);
+		role.setName(name);
+		role.setRoleKey(key);
+		role.setPrivilege("");
+		roleDao.save(role);
+		
+		return new RespPureDto(200, "角色创建成功！");
+	}
+	
+	
+	
 	
 	@Transactional(value="transactionManager")
 	public RespPureDto update(int id, String name, List<String> privKeys) {

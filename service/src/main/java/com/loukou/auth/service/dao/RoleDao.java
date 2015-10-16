@@ -13,6 +13,8 @@ public interface RoleDao extends CrudRepository<RoleEntity, Integer> {
 	
 	RoleEntity findById(int id);
 	
+	RoleEntity findByRoleKey(String roleKey);
+	
 	List<RoleEntity> findByAppId(int appId);
 	
 	@Query("select r.appId from RoleEntity r where r.id in (?1) ")

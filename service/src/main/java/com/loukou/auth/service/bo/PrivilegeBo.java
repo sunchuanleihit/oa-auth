@@ -4,7 +4,8 @@ public class PrivilegeBo {
 	
 	private String app;
 	private String privKey;
-	private String desc;
+	private String name;
+	private String type = "";
 	private int status = 0; // 0 not in use, 1 in use 
 	
 	
@@ -26,13 +27,18 @@ public class PrivilegeBo {
 	public void setPrivKey(String privKey) {
 		this.privKey = privKey;
 	}
-	public String getDesc() {
-		return desc;
+	public String getName() {
+		return name;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+
 
 }

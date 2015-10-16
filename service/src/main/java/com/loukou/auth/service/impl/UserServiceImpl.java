@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -101,7 +100,7 @@ public class UserServiceImpl implements UserService {
 					if (roles.get(i).getAppId() == appId) {
 						RoleBo role = new RoleBo();
 						role.setId(roles.get(i).getId());
-						role.setRole(roles.get(i).getRole());
+						role.setRole(roles.get(i).getRoleKey());
 						
 						String privilegeStr = roles.get(i).getPrivilege();
 						List<String> privKeys = PrivilegeUtil.parsePrivKeys(privilegeStr);

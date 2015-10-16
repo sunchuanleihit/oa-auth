@@ -66,7 +66,7 @@ $(document).ready(function() {
 	        title: '权限'
 	    }, 
 	    {
-	        field: 'role',
+	        field: 'roleKey',
 	        title: '标识'
 	    }, 
 	    {
@@ -135,6 +135,36 @@ function onClickCreateRoleModalButton() {
 
 function onClickCreateRoleButton() {
 	$("#create_role_button").click(function() {
+	
+		var name = $("#role_name").val();
+		var key = $("#role_key").val();
+		var appId = $("#app_selector").val();
+		
+		$.ajax( {    
+		    url:'../role/create', 
+		    data:{ 
+		    	name: name,
+		    	key: key,
+		    	appId: appId
+		    },    
+		    type:'post',    
+		    cache:false,    
+		    dataType:'json',    
+		    success:function(data) {
+		    	 if (data.code == 200) {
+		    	 	alert("新建成功！");
+		    	 	$("#create_role_modal").modal("hide");
+		    	 	refreshRolesTable();
+		    	 } else {
+		    	 	alert(data.errorMsg);
+		    	 }
+		        
+		     },    
+		     error : function() {      
+		          alert("异常！");    
+		     }    
+		}); 
+	
 		
 	
 	});
