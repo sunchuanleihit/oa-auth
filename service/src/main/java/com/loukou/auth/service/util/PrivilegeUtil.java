@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.loukou.auth.enums.PrivilegesEnum;
 
 public class PrivilegeUtil {
 	
+	/*
 	public static Map<String, PrivilegesEnum> privilegeMap = new HashMap<String, PrivilegesEnum>();
 	
 	static {
@@ -18,6 +18,10 @@ public class PrivilegeUtil {
 			privilegeMap.put(e.getPrivKey(), e);
 		}
 	}
+	public static Map<String, PrivilegesEnum> getPrivilegeMap() {
+		return privilegeMap;
+	}
+	*/
 
 	
 	public static List<String> parsePrivKeys(String privilegeStr) {
@@ -31,9 +35,7 @@ public class PrivilegeUtil {
 		return privileges;
 	}
 	
-	public static Map<String, PrivilegesEnum> getPrivilegeMap() {
-		return privilegeMap;
-	}
+	
 	
 	
 	

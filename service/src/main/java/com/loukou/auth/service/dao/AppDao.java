@@ -7,4 +7,5 @@ import com.loukou.auth.service.entity.AppEntity;
 public interface AppDao extends CrudRepository<AppEntity, Integer> {
 
 	AppEntity findById(int appId);
+	
 }

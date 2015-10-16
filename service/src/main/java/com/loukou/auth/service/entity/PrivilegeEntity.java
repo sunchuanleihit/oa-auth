@@ -6,23 +6,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
-@Table(name = "oa_app")
-public class AppEntity {
 
+@Entity
+@Table(name = "oa_privilege")
+public class PrivilegeEntity {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
 	private int id;
-
+	
 	@Column(name = "name")
 	private String name;
-
-	@Column(name = "domain_prefix")
-	private String domainPrefix;
+	
+	@Column(name = "priv_key")
+	private String privKey;
+	
+	@Column(name = "type")
+	private String type;
 	
 	@Column(name = "app_key")
 	private String appKey;
+	
 
 	public int getId() {
 		return id;
@@ -40,12 +44,20 @@ public class AppEntity {
 		this.name = name;
 	}
 
-	public String getDomainPrefix() {
-		return domainPrefix;
+	public String getPrivKey() {
+		return privKey;
 	}
 
-	public void setDomainPrefix(String domainPrefix) {
-		this.domainPrefix = domainPrefix;
+	public void setPrivKey(String privKey) {
+		this.privKey = privKey;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getAppKey() {
@@ -55,7 +67,4 @@ public class AppEntity {
 	public void setAppKey(String appKey) {
 		this.appKey = appKey;
 	}
-	
-	
-
 }
