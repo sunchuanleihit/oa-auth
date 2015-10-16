@@ -1,10 +1,53 @@
 
 
 <div>
+	<button class="btn btn-primary" id="create_role_modal_button" type="button">新建角色</button>
+
+	<br /><br /><br />
 	
 	<table id="roles_table"></table>
 
 </div>
+
+
+
+
+<!--     新增角色模态框       -->
+<div class="modal fade" id="create_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">新建角色</h4>
+      </div>
+      <div class="modal-body">
+
+			<form class="form-horizontal">
+			  <div class="form-group">
+			    <label for="role_name"  class="col-sm-2 control-label">角色名</label>
+			    <div class="col-sm-10">
+			      <input type="text"  class="form-control" id="role_name" value="" >
+			    </div>
+			  </div>
+			  
+			  <div class="form-group">
+			    <label for="role_key"  class="col-sm-2 control-label">标识</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="role_key" value="" >
+			    </div>
+			  </div>	
+			  
+			</form>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" id="create_role_button" class="btn btn-primary">新建</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -16,8 +59,8 @@ $(document).ready(function() {
 	        field: 'id',
 	        title: 'id'
 	    }, {
-	        field: 'desc',
-	        title: '描述'
+	        field: 'name',
+	        title: '角色名'
 	    }, {
 	        field: 'privilege',
 	        title: '权限'
@@ -33,10 +76,11 @@ $(document).ready(function() {
 	    }
     ];
 	
-	
 	initRolesTable(rolesColumns);
 	onAppSelectorChange();
 	onClickRoleEditButton();
+	onClickCreateRoleModalButton();
+	onClickCreateRoleButton();
 	
 });
 
@@ -81,6 +125,22 @@ function onClickRoleEditButton() {
 		pushPageStack("../role/detail?id=" + roleId);
 	});
 }
+
+function onClickCreateRoleModalButton() {
+	$("#create_role_modal_button").click(function() {
+		$("#create_role_modal").modal("show");
+	
+	});
+}
+
+function onClickCreateRoleButton() {
+	$("#create_role_button").click(function() {
+		
+	
+	});
+}
+
+
 
 
 
