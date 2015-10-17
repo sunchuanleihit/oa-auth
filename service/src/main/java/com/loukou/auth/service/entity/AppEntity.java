@@ -23,6 +23,18 @@ public class AppEntity {
 	
 	@Column(name = "app_key")
 	private String appKey;
+	
+	@Column(name = "status")
+	private int status;
+
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
 	public int getId() {
 		return id;

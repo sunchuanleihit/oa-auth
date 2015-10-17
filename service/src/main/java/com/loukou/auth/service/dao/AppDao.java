@@ -8,4 +8,6 @@ public interface AppDao extends CrudRepository<AppEntity, Integer> {
 
 	AppEntity findById(int appId);
 	
+	AppEntity findByIdAndStatus(int id, int status);
+	
 }
