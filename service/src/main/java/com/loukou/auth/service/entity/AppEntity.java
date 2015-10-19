@@ -21,12 +21,25 @@ public class AppEntity {
 	@Column(name = "domain_prefix")
 	private String domainPrefix;
 	
+	@Column(name = "port")
+	private Integer port;
+	
+	
 	@Column(name = "app_key")
 	private String appKey;
 	
 	@Column(name = "status")
 	private int status;
 
+	
+
+	public Integer getPort() {
+		return port;
+	}
+
+	public void setPort(Integer port) {
+		this.port = port;
+	}
 
 	public int getStatus() {
 		return status;

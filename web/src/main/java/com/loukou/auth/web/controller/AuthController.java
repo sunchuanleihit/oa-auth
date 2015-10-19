@@ -86,7 +86,7 @@ public class AuthController extends BaseController {
 				if (app != null
 						&& StringUtils.isNotEmpty(app.getDomainPrefix())) {
 
-					return getRedirectUrl(app.getDomainPrefix(), token);
+					return getRedirectUrl(app.getDomainPrefix(),app.getPort(), token);
 				}
 			}
 		}
@@ -94,7 +94,7 @@ public class AuthController extends BaseController {
 		return "error";
 	}
 
-	private String getRedirectUrl(String prefix, String token) {
+	private String getRedirectUrl(String prefix, int port, String token) {
 		StringBuilder sb = new StringBuilder("redirect:http://");
 		sb.append(prefix);
 		sb.append(domainSuffix);

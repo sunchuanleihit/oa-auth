@@ -35,8 +35,7 @@ public class LoginController {
 	
 		RespDto<AuthUserDto> resp = authService.validateToken(
 				configLoader.getAppId(), token);
-		
-		
+
 
 		if (resp != null
 				&& resp.getData() != null
@@ -50,8 +49,7 @@ public class LoginController {
 			
 			request.getSession().setAttribute(configLoader.getSessionKey(),
 					authInfo);
-			
-			
+
 
 			return "redirect:/";
 		} else {
