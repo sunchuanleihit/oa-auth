@@ -28,9 +28,7 @@ public class AuthController extends BaseController {
 
 	@Resource(name = "domain.suffix")
 	private String domainSuffix;
-	
-	@Resource(name = "domain.port")
-	private String domainPort;
+
 
 	private static final String PARAMETER_TOKEN = "castk";
 

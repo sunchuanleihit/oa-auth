@@ -9,6 +9,7 @@
         
 	<mvc:annotation-driven />
 	<!-- scan controller -->
+	<context:component-scan base-package="com.loukou.auth.core" /> 
 	<context:component-scan base-package="com.loukou.auth.web" />
 
 	<!-- 静态资源映射 -->
@@ -24,6 +25,16 @@
 		<property name="defaultEncoding" value="UTF-8"/>
 		<property name="uploadTempDir" value="resources/temp/upload"/>
     </bean>
+    
+    
+    <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.loukou.auth.core.interceptor.AuthInterceptor">
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+    
 
 	<!-- freemarker的配置 --> 
 	 <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer"> 

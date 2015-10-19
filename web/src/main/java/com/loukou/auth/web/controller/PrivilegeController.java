@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.loukou.auth.core.annotation.AuthCheck;
 import com.loukou.auth.resp.dto.PrivilegeRespDto;
 import com.loukou.auth.resp.dto.base.RespPageDto;
 import com.loukou.auth.resp.dto.base.RespPureDto;
@@ -51,7 +52,7 @@ public class PrivilegeController {
 		return privilegeService.getPrivilegesByAppId(appId, pageNum, pageSize);
 	}
 	
-	
+	@AuthCheck(privileges={"priv.create"})
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
 	public RespPureDto listByApp(
