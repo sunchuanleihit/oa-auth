@@ -66,11 +66,17 @@ $(document).ready(function() {
 			field: "type",
 			title: "类型"
 		},
+		{
+			field: "operation",
+			title: "操作",
+			formatter: privFormatter
+		}
 	];
 	
 	initPrivilegesTable(privColumns);
 	onClickCreatePrivilegeModalButton();
 	onClickCreatePrivButton();
+	onClickPrivDelButton();
 
 });
 
@@ -145,6 +151,22 @@ function onClickCreatePrivButton() {
 		}); 	
 	});
 }
+
+function privFormatter(value, row, index) {
+	return "<a class='priv_del_button'>删除</a>";
+}
+
+
+function onClickPrivDelButton() {
+	$("#privileges_table").on("click", ".priv_del_button", function() {
+	
+		alert(1);
+	
+	});
+}
+
+
+
 
 
 

@@ -18,8 +18,8 @@
 	</bean>
 	
 	<bean id="cas.url" class="java.lang.String">
-		<!-- <constructor-arg type="java.lang.String" value="${cas.url}" /> -->
-		<constructor-arg type="java.lang.String" value="127.0.0.1:18880" />
+		<constructor-arg type="java.lang.String" value="${cas.url}" />
+		<!--  <constructor-arg type="java.lang.String" value="127.0.0.1:18880" /> -->
 	</bean>
 
 	<dubbo:reference interface="com.loukou.auth.api.AuthService"
