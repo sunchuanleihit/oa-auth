@@ -99,7 +99,7 @@ public class AuthController extends BaseController {
 		sb.append(prefix);
 		sb.append(domainSuffix);
 		sb.append(":");
-		sb.append(domainPort);
+		sb.append(port);
 		sb.append("/dologin?");
 		sb.append(PARAMETER_TOKEN);
 		sb.append("=");
