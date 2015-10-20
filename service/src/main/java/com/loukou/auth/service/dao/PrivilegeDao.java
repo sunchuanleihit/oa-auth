@@ -11,6 +11,8 @@ import com.loukou.auth.service.entity.PrivilegeEntity;
 
 public interface PrivilegeDao extends CrudRepository<PrivilegeEntity, Integer> {
 	
+	PrivilegeEntity findById(int id);
+	
 	PrivilegeEntity findByPrivKey(String privKey);
 	
 	List<PrivilegeEntity> findByAppKey(String appKey);

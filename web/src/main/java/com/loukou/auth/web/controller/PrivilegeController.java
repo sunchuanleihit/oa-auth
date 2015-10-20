@@ -55,7 +55,7 @@ public class PrivilegeController {
 	@AuthCheck(privileges={"priv.create"})
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
-	public RespPureDto listByApp(
+	public RespPureDto  create(
 			@RequestParam(value="appId") int appId,
 			@RequestParam(value="privName") String privName, 
 			@RequestParam(value="privKey") String privKey,
@@ -64,14 +64,19 @@ public class PrivilegeController {
 
 		return privilegeService.create(privName, privKey, privType, appId);
 	}
+	
+	
+	@AuthCheck(privileges={"priv.delete"})
+	@RequestMapping(value = "/delete", method = RequestMethod.DELETE)
+	@ResponseBody
+	public RespPureDto listByApp(
+			@RequestParam(value="privId") int privId
+			
+			) {
+
+		return privilegeService.delete(privId);
+	}
 }
-
-
-
-
-
-
-
 
 
 

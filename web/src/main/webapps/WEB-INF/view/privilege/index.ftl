@@ -153,16 +153,37 @@ function onClickCreatePrivButton() {
 }
 
 function privFormatter(value, row, index) {
-	return "<a class='priv_del_button'>删除</a>";
+	return "<a priv_id='"+row.id+"'  class='priv_del_button'>删除</a>";
 }
 
 
 function onClickPrivDelButton() {
 	$("#privileges_table").on("click", ".priv_del_button", function() {
-	
-		alert(1);
-	
+		var privId = $(this).attr("priv_id");
+		
+		
+		$.ajax( {    
+		    url:'../privilege/delete?privId=' + privId, 
+		    data:{ 
+		    	
+		    },    
+		    type:'delete',    
+		    cache:false,    
+		    dataType:'json',    
+		    success:function(data) {
+		    	 if (data.code == 200) {
+		    	 	alert("删除成功！");
+		    	 	refreshPrivilegesTable();
+		    	 } else {
+		    	 	alert(data.errorMsg);
+		    	 }
+		     },    
+		     error : function() {      
+		          alert("异常！");    
+		     }    
+		}); 	
 	});
+	
 }
 
 

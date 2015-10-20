@@ -19,7 +19,9 @@ public class ConfigService {
             		new SubTab("权限列表", "/privilege/index")
                           )));
            
-
+            tabs.add(new ParentTab("module.product","系统",Lists.newArrayList(
+            		new SubTab("配置", "/app/index")
+                          )));
         }
         public static List<ParentTab> getConfigTabs(){
             return tabs;

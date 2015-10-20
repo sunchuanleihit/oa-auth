@@ -94,6 +94,19 @@ public class PrivilegeServiceimpl implements PrivilegeService  {
 		
 		return new RespPureDto(200, "权限创建成功！");
 	}
+
+	@Override
+	public RespPureDto delete(int privId) {
+		PrivilegeEntity priv = privilegeDao.findById(privId);
+		
+		if (priv == null) {
+			return new RespPureDto(204, "id对应的权限不存在！");
+		}
+		
+		privilegeDao.delete(priv);
+		
+		return new RespPureDto(200, "权限删除成功！");
+	}
 	
 	
 }

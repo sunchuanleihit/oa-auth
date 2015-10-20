@@ -9,5 +9,7 @@ public interface PrivilegeService {
 	public RespPageDto<PrivilegeRespDto> getPrivilegesByAppId(int appId, int pageNum, int pageSize);
 	
 	public RespPureDto create(String privName, String privKey, String privType, int appId);
+	
+	public RespPureDto delete(int privId);
 
 }
