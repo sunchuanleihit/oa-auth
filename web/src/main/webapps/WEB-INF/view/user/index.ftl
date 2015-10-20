@@ -111,10 +111,10 @@ function onClickCreateUserModal() {
 		var userDepartment = $("#user_department").val();
 		
 		var blankPattern = /^\s*$/;
-		var emailPattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+		var emailPattern = /^[a-zA-Z0-9_-]+@loukou.com$/;
 		
 		if (!userEmail.match(emailPattern)) {
-			alert("邮箱格式不正确！");
+			alert("邮箱格式不正确,必须为@loukou.com！");
 			return;
 		}
 		

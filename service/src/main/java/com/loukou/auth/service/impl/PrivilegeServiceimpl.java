@@ -79,7 +79,7 @@ public class PrivilegeServiceimpl implements PrivilegeService  {
 			return new RespPureDto(204, "权限所属app为空！");
 		}
 		
-		PrivilegeEntity priv = privilegeDao.findByPrivKey(privKey);
+		PrivilegeEntity priv = privilegeDao.findByPrivKeyAndAppKey(privKey, app.getAppKey());
 		
 		if (priv != null) {
 			return new RespPureDto(204, String.format("权限标识‘%s’已存在， 无法创建！", privKey));

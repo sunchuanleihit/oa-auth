@@ -13,7 +13,7 @@ public interface PrivilegeDao extends CrudRepository<PrivilegeEntity, Integer> {
 	
 	PrivilegeEntity findById(int id);
 	
-	PrivilegeEntity findByPrivKey(String privKey);
+	PrivilegeEntity findByPrivKeyAndAppKey(String privKey, String appKey);
 	
 	List<PrivilegeEntity> findByAppKey(String appKey);
 	
