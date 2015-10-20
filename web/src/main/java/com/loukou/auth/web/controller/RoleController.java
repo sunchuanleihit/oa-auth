@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.loukou.auth.resp.dto.base.RespListDto;
 import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.bo.RoleBo;
 import com.loukou.auth.service.entity.RoleEntity;
@@ -58,6 +59,19 @@ public class RoleController {
 		return roles;
 	}
 	
+	
+	@RequestMapping(value = "/rolesByAppIdAndUserId")
+	@ResponseBody
+	public RespListDto<RoleEntity> getRoles(
+			@RequestParam(value="appId") int appId,
+			@RequestParam(value="userId") int userId
+			) {
+		
+		return roleService.getRolesByAppIdAndUserId(appId, userId);
+	}
+	
+	
+	
 	@RequestMapping(value = "/create", method = RequestMethod.POST )
 	@ResponseBody
 	public RespPureDto  update(
@@ -78,6 +92,18 @@ public class RoleController {
 			@RequestParam(value="privKeys[]") List<String> privKeys
 			) {
 		return roleService.update(id, name, privKeys);
+	}
+	
+	
+	
+	@RequestMapping(value = "/changeRolesForUser", method = RequestMethod.PUT )
+	@ResponseBody
+	public RespPureDto  update(
+			@RequestParam(value="appId") int appId,
+			@RequestParam(value="userId") int userId,
+			@RequestParam(value="roleId[]") List<Integer> roleIds
+			) {
+		return roleService.updateRolesForUser(appId, userId, roleIds);
 	}
 	
 	

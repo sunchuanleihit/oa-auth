@@ -12,8 +12,9 @@ public class ConfigService {
             		new SubTab("角色列表", "/role/index")
                           )));
             tabs.add(new ParentTab("module.product","用户管理",Lists.newArrayList(
-            		new SubTab("所有用户", "/user/index"),
-            		new SubTab("系统用户", "/user/role")
+            		new SubTab("系统用户", "/user/role"),
+            		new SubTab("所有用户", "/user/index")
+            		
                           )));
             tabs.add(new ParentTab("module.privilege","权限管理",Lists.newArrayList(
             		new SubTab("权限列表", "/privilege/index")

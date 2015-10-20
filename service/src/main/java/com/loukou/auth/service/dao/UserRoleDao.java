@@ -15,4 +15,10 @@ public interface UserRoleDao extends CrudRepository<UserRoleEntity, Integer> {
 	
 	@Query("select ur from UserRoleEntity ur where roleId in (?1)")
 	List<UserRoleEntity> findByRoleIds(List<Integer> roleIds);
+	
+	@Query("select ur from UserRoleEntity ur where roleId in (?1) and userId = (?2)")
+	List<UserRoleEntity> findByRoleIdsAndUserId(List<Integer> roleIds, int userId);
+	
+	
+	
 }

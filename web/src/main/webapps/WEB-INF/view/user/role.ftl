@@ -20,7 +20,6 @@
 			</div>
       	</div>
 
-		
 		<div id="all_users_panel">
 		
 			<span>非系统用户</span>
@@ -28,7 +27,6 @@
 				<table id="users_not_in_app_table"></table>
 			</div>
 		</div>
-
 
       </div>
       <div class="modal-footer">
@@ -40,6 +38,30 @@
 </div>
 
 
+<!--        编辑系统用户  模态框          -->
+<div class="modal fade" id="update_user_role_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">编辑用户信息</h4>
+      </div>
+      <div class="modal-body">
+      	
+      	<div id="update_roles_panel">
+			<span>系统角色</span>
+				<div id="all_update_roles">
+				</div>
+				<input id="update_user_id" type="hidden" />
+      	</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" id="update_user_button" class="btn btn-primary">更新</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <script type="text/javascript">
@@ -60,6 +82,11 @@ $(document).ready(function() {
 		    	field: 'roles',
 		    	title: '角色',
 		    	formatter: roleFormatter
+		    }
+		    , {
+		    	field: 'operation',
+		    	title: '操作',
+		    	formatter: operationFormatter
 		    }
 		];
 		
@@ -88,6 +115,8 @@ $(document).ready(function() {
 	onAppSelectorChange();
 	onClickAddUserRoleModal();
 	updateAllRoles();
+	onClickUserUpdateModalButton();
+	onClickUpdateUserButton();
 });
 
 
@@ -212,11 +241,13 @@ function updateAllRoles() {
 	    cache:false,    
 	    dataType:'json',    
 	    success:function(data) {
+	    	$("#all_update_roles").html("");
 	    	$("#all_roles").html("");
 	    	
 	    	for (var idx in data) {
 	    	 	var role = data[idx];
 	    	 	$("#all_roles").append("<input type='checkbox' class='add_user_role_checkbox' role_id='"+role.id+"' /> " + role.name);
+	    	 	$("#all_update_roles").append("<input id='id_update_user_role_id_"+role.id+"' type='checkbox' class='update_user_role_checkbox' role_id='"+role.id+"' /> " + role.name);
 	    	}
 	    },    
 	    error : function() {      
@@ -246,9 +277,94 @@ function initUsersNotInAppTable(columns) {
 
 function refreshUsersNotInAppTable() {
 	var appId = $("#app_selector").val();
-	
 	$("#users_not_in_app_table").bootstrapTable("refresh", {url: '../user/listNotInApp?appId=' + appId});
+}
 
+
+
+function operationFormatter(value, row, index) {
+	return "<a class='user_update_modal_button' user_id='"+row.id+"'>编辑</a>";
+}
+
+
+function onClickUserUpdateModalButton() {
+	$("#usersRoleTable").on("click", ".user_update_modal_button", function() {
+		var userId = $(this).attr("user_id");
+		$("#update_user_id").val(userId);
+		refreshUserUpdateModal();
+		$("#update_user_role_modal").modal("show");
+		
+	});
+}
+
+function refreshUserUpdateModal() {
+	var appId = $("#app_selector").val();
+	var userId = $("#update_user_id").val();
+
+	$.ajax( {    
+	    url:'../role/rolesByAppIdAndUserId', 
+	    data:{ 
+	    	appId:appId ,
+	    	userId: userId
+	    },    
+	    type:'get',    
+	    cache:false,    
+	    dataType:'json',    
+	    success:function(data) {
+	    	if (data.code == 200) {
+	    		for (var idx in data.result.list) {
+	    			var role = data.result.list[idx];
+	    			$("#id_update_user_role_id_"+role.id).attr("checked", "checked");
+	    		}
+	    	}
+	    },    
+	    error : function() {      
+	          alert("异常！");    
+	    }    
+	});
+
+}
+
+
+
+function onClickUpdateUserButton() {
+	$("#update_user_button").click(function() {
+		var roleIds = [];
+		var userId = $("#update_user_id").val();
+		var appId = $("#app_selector").val();
+		
+		$(".update_user_role_checkbox").each(function() {
+			var roleId = $(this).attr("role_id");
+			if ($(this).is(":checked") ) {
+				roleIds.push(roleId);
+			}
+		});
+		
+		$.ajax( {    
+		    url:'../role/changeRolesForUser', 
+		    data:{ 
+		    	appId: appId,
+		    	userId: userId,
+		    	roleId: roleIds
+		    },    
+		    type:'put',    
+		    cache:false,    
+		    dataType:'json',    
+		    success:function(data) {
+		    	if (data.code == 200) {
+		    		refreshUsersRoleTable();
+		    		$("#update_user_role_modal").modal("hide");
+		    	} else {
+		    		alert(data.errorMsg);
+		    	}
+		    },    
+		    error : function() {      
+		         alert("异常！!");    
+		    }    
+		});
+		
+	
+	});
 }
 
 

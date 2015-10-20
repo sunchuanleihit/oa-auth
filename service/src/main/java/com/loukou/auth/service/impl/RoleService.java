@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.loukou.auth.resp.dto.base.ListDto;
+import com.loukou.auth.resp.dto.base.RespListDto;
 import com.loukou.auth.resp.dto.base.RespPureDto;
 import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
@@ -19,9 +21,11 @@ import com.loukou.auth.service.constants.PrivilegeStatus;
 import com.loukou.auth.service.dao.AppDao;
 import com.loukou.auth.service.dao.PrivilegeDao;
 import com.loukou.auth.service.dao.RoleDao;
+import com.loukou.auth.service.dao.UserRoleDao;
 import com.loukou.auth.service.entity.AppEntity;
 import com.loukou.auth.service.entity.PrivilegeEntity;
 import com.loukou.auth.service.entity.RoleEntity;
+import com.loukou.auth.service.entity.UserRoleEntity;
 import com.loukou.auth.service.util.PrivilegeUtil;
 
 @Service
@@ -35,6 +39,9 @@ public class RoleService {
 	
 	@Autowired 
 	PrivilegeDao privilegeDao;
+	
+	@Autowired 
+	UserRoleDao userRoleDao;
 
 	public List<RoleEntity> getRolesByAppId(int appId) {
 		
@@ -61,6 +68,39 @@ public class RoleService {
 		}
 		
 		return roles;
+		
+	}
+	
+	
+	
+	public RespListDto<RoleEntity> getRolesByAppIdAndUserId(int appId, int userId) {
+		List<RoleEntity> rolesOfUser = new ArrayList<RoleEntity>();
+
+		List<RoleEntity> roles = roleDao.findByAppId(appId);
+		
+		if (CollectionUtils.isEmpty(roles)) {
+			return new RespListDto<RoleEntity>(204, "系统中没有角色！");
+		}
+
+		List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
+		if (CollectionUtils.isEmpty(userRoles)) {
+			return new RespListDto<RoleEntity>(204, "用户未关联任何角色！");
+		}
+		
+		List<Integer> roleIds = new ArrayList<Integer>();
+		for (UserRoleEntity userRole : userRoles) {
+			roleIds.add(userRole.getRoleId());
+		}
+		
+		for (RoleEntity role : roles) {
+			if (roleIds.contains(role.getId())) {
+				rolesOfUser.add(role);
+			}
+		}
+		
+		ListDto<RoleEntity> listDto = new ListDto<RoleEntity>("ok", rolesOfUser);
+
+		return new RespListDto<RoleEntity>(200, "ok", listDto);
 		
 	}
 	
@@ -214,6 +254,63 @@ public class RoleService {
 	}
 	
 	
+	public RespPureDto updateRolesForUser(int appId, int userId, List<Integer> roleIds) {
+		
+		if (roleIds == null) {
+			return new RespPureDto(204, "参数错误，roleIds为null！");
+		}
+
+		List<Integer> appRoleIds = roleDao.findIdsByAppId(appId);
+		
+		if (CollectionUtils.isEmpty(appRoleIds)) {
+			return new RespPureDto(204, "系统中没有角色！");
+		}
+		
+		for (Integer roleId : roleIds) {
+			if (!appRoleIds.contains(roleId)) {
+				return new RespPureDto(204, "数据错误，要新建的用户角色不存在于此app!");
+			}
+		}
+
+		List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
+		if (CollectionUtils.isEmpty(userRoles)) {
+			return new RespPureDto(204, "用户未关联任何角色！");
+		}
+		
+		List<Integer> roleIdExist = new ArrayList<Integer>();
+		
+		for (UserRoleEntity  userRole : userRoles) {
+			roleIdExist.add(userRole.getRoleId());
+		}
+		
+		
+		List<Integer> roleIdDeleting = new ArrayList<Integer>();
+		List<Integer> roleIdAdding = new ArrayList<Integer>();	
+		
+		roleIdAdding.addAll(roleIds);
+		roleIdAdding.removeAll(roleIdExist);
+		roleIdDeleting.addAll(roleIdExist);
+		roleIdDeleting.removeAll(roleIds);
+		
+		for (Integer roleId : roleIdAdding) {
+			UserRoleEntity userRole = new UserRoleEntity();
+			userRole.setRoleId(roleId);
+			userRole.setUserId(userId);
+			userRoleDao.save(userRole);
+		}
+		
+		if (roleIdDeleting.size() > 0) {
+			userRoles = userRoleDao.findByRoleIdsAndUserId(roleIdDeleting, userId);
+			if (!CollectionUtils.isEmpty(userRoles)) {
+				for (UserRoleEntity userRole : userRoles) {
+					userRoleDao.delete(userRole);
+				}
+			}
+		}
+		
+		return new RespPureDto(200, "用户角色更新成功！");
+		
+	}	
 	
 	private Map<String, PrivilegeEntity> getPrivMapByAppId(int appId) {
 		AppEntity app = appDao.findById(appId);
@@ -239,6 +336,8 @@ public class RoleService {
 		
 		return privMap;
 	}
+	
+
 	
 	
 	

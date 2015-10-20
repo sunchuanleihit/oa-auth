@@ -97,6 +97,7 @@ function onClickSaveRoleButton() {
 		    success:function(data) {
 		    	 if (data.code == 200) {
 		    	 	alert("更新成功！");
+		    	 	refreshRolesTable();
 		    	 	loadCurrentPage("../role/detail?id=" + id);
 		    	 } else {
 		    	 	alert(data.errorMsg);
