@@ -9,13 +9,16 @@
                     
                     <a id="admin_logout_button" href="#"></a>
                     <br />
-                    
-             
-	                    <select class="plugin_select" id="app_selector"   data-width="100%"  style="width: 70%;">
-						    	<#list apps as app >
-						    		<option value="${app.id}">${app.name}</option>
-						    	</#list>
-						</select>
+
+                    <select class="plugin_select" id="app_selector"   data-width="100%"  style="width: 70%;">
+				    	<#list apps as app >
+				    		<option value="${app.id}">${app.name}</option>
+				    	</#list>
+					</select>
+					
+					<#list apps as app >
+			    		<input type="hidden" value="${app.name}" id="g_system_${app.id}"  />
+					</#list>
 			
                     
                 </div>
@@ -39,6 +42,8 @@
         <script type="text/javascript">
         $(document).ready(function() {
         	$(".plugin_select").selectpicker();
+        	setGlabelSystemName();
+        	
         	
         
         	$("#admin_logout_button").click(function() {
@@ -67,6 +72,19 @@
         
         
         });
+        
+        
+        function setGlabelSystemName() {
+        	var appId = $("#app_selector").val();
+        	
+        	var sysName = $("#g_system_" + appId).val();
+
+        	$("#globel_system_name").html(sysName);
+        }
+        
+        
+        
+        
         
         </script>
         

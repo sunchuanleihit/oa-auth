@@ -38,20 +38,40 @@ public class UserController {
 	}
 	
 	
+	
+	
 	@RequestMapping(value = "/create")
 	@ResponseBody
 	public RespPureDto create(
 			@RequestParam(value="name") String name,
 			@RequestParam(value="email") String email,
-			@RequestParam(value="department") String department
+			@RequestParam(value="department") String department,
+			@RequestParam(value="password") String password
 			) {
 		UserBo userBo = new UserBo();
 		userBo.setEmail(email);
 		userBo.setDepartment(department);
 		userBo.setName(name);
+		userBo.setPassword(password);
 		
 		return userService.createUser(userBo);
 	}
+	
+	
+	
+	@RequestMapping(value = "/doRepass")
+	@ResponseBody
+	public RespPureDto doRepass(
+			@RequestParam(value="email") String email,
+			@RequestParam(value="oldPassword") String oldPassword,
+			@RequestParam(value="newPassword") String newPassword
+			) {
+		
+		return userService.resetPassword(email, oldPassword, newPassword);
+	}
+	
+	
+	
 	
 	
 	@RequestMapping(value = "/addUserRoleForApp", method = RequestMethod.PUT )

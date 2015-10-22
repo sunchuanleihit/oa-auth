@@ -40,11 +40,19 @@ public class AuthController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView toLogin(@RequestParam("appid") String appId) {
+	public ModelAndView toLogin(@RequestParam("appid") int appId) {
+		
+		AppEntity app = appService.getApp(appId);
+		
+		String title = "后台";
+		if (app != null) {
+			title = app.getName() + title;
+ 		}
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("login");
 		mv.addObject("appId", appId);
-		mv.addObject("app", "后台");
+		mv.addObject("app", title);
 		return mv;
 	}
 	
@@ -57,6 +65,21 @@ public class AuthController extends BaseController {
 		mv.setViewName("no_priv");
 		mv.addObject("appId", appId);
 		mv.addObject("app", "后台");
+		return mv;
+	}
+	
+	
+	
+	@RequestMapping(value = "/repass")
+	public ModelAndView rePass(
+			@RequestParam("appId") int appId,
+			@RequestParam("email") String email
+			) {
+		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("repass");
+		mv.addObject("appId", appId);
+		mv.addObject("email", email);
 		return mv;
 	}
 	

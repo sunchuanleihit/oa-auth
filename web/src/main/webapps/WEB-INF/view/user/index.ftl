@@ -38,6 +38,13 @@
 			    </div>
 			  </div>
 			  
+			  <div class="form-group">
+			    <label for="user_init_password"  class="col-sm-2 control-label">初始密码</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" id="user_init_password" value="123456" >
+			    </div>
+			  </div>
+			  
 			</form>
 
 
@@ -109,6 +116,7 @@ function onClickCreateUserModal() {
 		var userEmail = $("#user_email").val();
 		var userName = $("#user_name").val();
 		var userDepartment = $("#user_department").val();
+		var initPassword = $("#user_init_password").val();
 		
 		var blankPattern = /^\s*$/;
 		var emailPattern = /^[a-zA-Z0-9_-]+@loukou.com$/;
@@ -127,13 +135,20 @@ function onClickCreateUserModal() {
 			alert("用户部门不得为空！");
 			return;
 		}
+		
+		if (initPassword.match(blankPattern)) {
+			alert("初始密码不得为空！");
+			return;
+		}
 	
 		$.ajax( {    
 		    url:'../user/create', 
 		    data:{ 
 		    	name: userName,
 		    	email: userEmail,
-		    	department: userDepartment
+		    	department: userDepartment,
+		    	password: initPassword
+		    	
 		    },    
 		    type:'post',    
 		    cache:false,    

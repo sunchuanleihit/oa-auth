@@ -150,11 +150,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional(value="transactionManager")
 	@Override
 	public RespPureDto createUser(UserBo user) {
+		
 		UserEntity entity = new UserEntity();
 		entity.setEmail(user.getEmail());
 		entity.setRealName(user.getName());
 		entity.setDepartment(user.getDepartment());
-		entity.setPassword(DigestUtils.md5Hex(user.getEmail()));
+		entity.setPassword(DigestUtils.md5Hex(user.getPassword()));
 		entity.setCreateTime(new Date());
 		userDao.save(entity);
 		
@@ -357,5 +358,32 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return new RespPureDto(200, "添加成功！");
+	}
+
+	@Override
+	public RespPureDto resetPassword(String email, String oldPassword, String newPassword) {
+		if (StringUtils.isEmpty(email)) {
+			return new RespPureDto(400, "修改失败，用户邮箱为空");
+		}
+		if (StringUtils.isEmpty(oldPassword)) {
+			return new RespPureDto(400, "修改失败，旧密码为空");
+		}
+		if (StringUtils.isEmpty(newPassword)) {
+			return new RespPureDto(400, "修改失败，新密码为空");
+		}
+
+		UserEntity user = userDao.findByEmailAndPassword(email, DigestUtils.md5Hex(oldPassword));
+		if (user == null) {
+			return new RespPureDto(400, "修改失败！ 邮箱不存在或旧密码错误！");
+		}
+		
+		if (user.getCreateTime() == null) {
+			user.setCreateTime(new Date());
+		}
+		
+		user.setPassword(DigestUtils.md5Hex(newPassword));
+		userDao.save(user);
+		
+		return new RespPureDto(200, "修改成功！");
 	}
 }
