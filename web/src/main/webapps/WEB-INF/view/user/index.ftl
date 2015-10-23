@@ -95,6 +95,7 @@ function initUsersTable(columns) {
 		sidePagination: 'server',
 		pageNumber: 1,
 		pageSize: 15,
+		cache: fale,
 		icons: {
 			refresh: 'glyphicon-refresh',
 		}
@@ -158,7 +159,7 @@ function onClickCreateUserModal() {
 		    	 	$("#create_user_modal").modal("hide");
 		    	 	refreshUsersTable();
 		    	 } else {
-		    	 	alert("创建失败！");
+		    	 	alert(data.errorMsg);
 		    	 }
 		    },    
 		    error : function() {      
