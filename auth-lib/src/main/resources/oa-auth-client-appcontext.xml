@@ -11,11 +11,6 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
         http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-
-
-	<bean id="env.domain" class="java.lang.String">
-		<constructor-arg type="java.lang.String" value="${env.domain}" />
-	</bean>
 	
 	<bean id="cas.url" class="java.lang.String">
 		<constructor-arg type="java.lang.String" value="${cas.url}" />

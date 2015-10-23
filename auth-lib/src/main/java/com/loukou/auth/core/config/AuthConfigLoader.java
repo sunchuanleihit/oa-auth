@@ -36,9 +36,6 @@ public class AuthConfigLoader {
 	private String casUrl;
 	
 
-	@Resource(name = "env.domain")
-	private String domain;
-
 	@PostConstruct
 	public void load() {
 		InputStream in = null;
