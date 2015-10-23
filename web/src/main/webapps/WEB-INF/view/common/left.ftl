@@ -43,6 +43,9 @@
         $(document).ready(function() {
         	$(".plugin_select").selectpicker();
         	setGlabelSystemName();
+        	$("#app_selector").change(function() {
+        		setGlabelSystemName();
+        	});
         	
         	
         
