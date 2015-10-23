@@ -139,7 +139,7 @@ function initUsersRoleTable(columns) {
 		sidePagination: 'server',
 		pageNumber: 1,
 		pageSize: 15,
-		cache: fale,
+		cache: false,
 		icons: {
 			refresh: 'glyphicon-refresh',
 		}
