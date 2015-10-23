@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -98,7 +99,8 @@ public class AuthController extends BaseController {
 	 */
 	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
 	public String login(@RequestParam("username") String userName,
-			@RequestParam String password, @RequestParam("appid") String appId) {
+			@RequestParam String password, @RequestParam("appid") String appId,
+			Model model) {
 		if (StringUtils.isNotEmpty(userName)
 				&& StringUtils.isNotEmpty(password)
 				&& StringUtils.isNotEmpty(appId)
@@ -113,6 +115,8 @@ public class AuthController extends BaseController {
 				}
 			}
 		}
+		
+		model.addAttribute("appId", appId);
 
 		return "error";
 	}
