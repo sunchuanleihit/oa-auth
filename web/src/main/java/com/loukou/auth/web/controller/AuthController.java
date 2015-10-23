@@ -60,11 +60,13 @@ public class AuthController extends BaseController {
 	 * 无权限的跳转页面
 	 */
 	@RequestMapping(value = "/no_priv", method = RequestMethod.GET)
-	public ModelAndView noPriv(@RequestParam("appid") String appId) {
+	public ModelAndView noPriv(@RequestParam("appid") int appId) {
+		
+		AppEntity app = appService.getApp(appId);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("no_priv");
 		mv.addObject("appId", appId);
-		mv.addObject("app", "后台");
 		return mv;
 	}
 	

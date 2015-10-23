@@ -14,6 +14,8 @@ public interface UserDao extends CrudRepository<UserEntity, Integer>,
 		JpaSpecificationExecutor<UserEntity> {
 
 	UserEntity findByEmailAndPassword(String email, String password);
+	
+	UserEntity findByEmail(String email);
 
 	UserEntity findById(int userId);
 	

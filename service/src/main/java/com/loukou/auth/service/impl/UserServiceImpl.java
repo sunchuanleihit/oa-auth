@@ -151,13 +151,37 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public RespPureDto createUser(UserBo user) {
 		
-		UserEntity entity = new UserEntity();
-		entity.setEmail(user.getEmail());
-		entity.setRealName(user.getName());
-		entity.setDepartment(user.getDepartment());
-		entity.setPassword(DigestUtils.md5Hex(user.getPassword()));
-		entity.setCreateTime(new Date());
-		userDao.save(entity);
+		String email = user.getEmail();
+		String name = user.getName();
+		String department = user.getDepartment();
+		String password = user.getPassword();
+		
+		if (StringUtils.isEmpty(email)) {
+			return new RespPureDto(400, "创建失败， 邮箱不得为空！");
+		}
+		if (StringUtils.isEmpty(name)) {
+			return new RespPureDto(400, "创建失败， 用户名不得为空！");
+		}
+		if (StringUtils.isEmpty(department)) {
+			return new RespPureDto(400, "创建失败， 部门不得为空！");
+		}
+		if (StringUtils.isEmpty(password)) {
+			return new RespPureDto(400, "创建失败， 密码不得为空！");
+		}
+		
+		UserEntity userEntity = userDao.findByEmail(email);
+		if (userEntity != null) {
+			return new RespPureDto(400, "创建失败， 相同邮箱已存在！");
+		}
+		
+		
+		userEntity = new UserEntity();
+		userEntity.setEmail(user.getEmail());
+		userEntity.setRealName(user.getName());
+		userEntity.setDepartment(user.getDepartment());
+		userEntity.setPassword(DigestUtils.md5Hex(user.getPassword()));
+		userEntity.setCreateTime(new Date());
+		userDao.save(userEntity);
 		
 		return new RespPureDto(200, "用户创建成功！");
 	}
