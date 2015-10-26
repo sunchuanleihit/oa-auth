@@ -17,6 +17,7 @@
 		</dependency>
 
 		<!-- Redis -->
+		<!-- 
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
@@ -26,6 +27,7 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 		</dependency>
+		 -->
 
 		<dependency>
 			<groupId>commons-lang</groupId>
