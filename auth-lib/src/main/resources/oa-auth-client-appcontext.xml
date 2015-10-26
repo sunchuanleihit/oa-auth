@@ -21,6 +21,7 @@
 		id="oaAuthService" />
 
 	<!-- Redis 配置 -->
+	<!-- 
 	<bean id="sessionRedisConnFactor"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
 		destroy-method="destroy">
@@ -40,5 +41,5 @@
 				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
 		</property>
 	</bean>
-
+     -->
 </beans>
