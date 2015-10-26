@@ -33,9 +33,12 @@ public class AuthServiceImpl implements AuthService {
 			AuthUserDto dto = new AuthUserDto();
 			dto.setName(user.getName());
 			dto.setUserId(user.getId());
+			
+			List<String> roles = new ArrayList<String>();
+			List<String> privileges = new ArrayList<String>();
+			
 			if (user.getRoles() != null) {
-				List<String> roles = new ArrayList<String>();
-				List<String> privileges = new ArrayList<String>();
+				
 				
 				for (int i = 0; i < user.getRoles().size(); ++i) {
 					roles.add(user.getRoles().get(i).getRole());
@@ -44,9 +47,13 @@ public class AuthServiceImpl implements AuthService {
 					}
 				}
 				
-				dto.setRoles(roles);
-				dto.setPrivileges(privileges);
+				
 			}
+			
+			
+			dto.setRoles(roles);
+			dto.setPrivileges(privileges);
+			
 			result.setData(dto);
 		}
 

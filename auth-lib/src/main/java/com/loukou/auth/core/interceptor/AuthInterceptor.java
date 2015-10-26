@@ -43,7 +43,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 				return true;
 			} else {
 				AuthInfo info = getInfo(request);
-				if (info != null) {
+				if (info != null ) {
 					String[] privileges = authCheck.privileges();
 	
 					// 按照权限验证权限
