@@ -26,6 +26,7 @@ import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
 import com.loukou.auth.service.bo.UserBo;
+import com.loukou.auth.service.constants.UserStatus;
 import com.loukou.auth.service.dao.RoleDao;
 import com.loukou.auth.service.dao.UserDao;
 import com.loukou.auth.service.dao.UserRoleDao;
@@ -201,7 +202,7 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		Pageable page = new PageRequest(pageNum - 1, pageSize);
-		Page<UserEntity> usersPage = userDao.findAll(page);
+		Page<UserEntity> usersPage = userDao.findAllByStatus(UserStatus.NORMAL, page);
 		
 		List<UserEntity> users = usersPage.getContent();
 		
@@ -329,9 +330,9 @@ public class UserServiceImpl implements UserService {
 		Page<UserEntity> userEntitiesPage;
 		
 		if (CollectionUtils.isEmpty(userIds)) {
-			userEntitiesPage = userDao.findAll(page);
+			userEntitiesPage = userDao.findAllByStatus(UserStatus.NORMAL, page);
 		} else {
-			userEntitiesPage = userDao.findByNotInIds(userIds, page);
+			userEntitiesPage = userDao.findByNotInIdsAndStatus(userIds, UserStatus.NORMAL, page);
 		}
 		
 		List<UserEntity> users = userEntitiesPage.getContent();
@@ -409,5 +410,20 @@ public class UserServiceImpl implements UserService {
 		userDao.save(user);
 		
 		return new RespPureDto(200, "修改成功！");
+	}
+
+	@Override
+	public RespPureDto deleteUser(int userId) {
+		UserEntity user = userDao.findById(userId);
+		
+		if (user == null) {
+			return new RespPureDto(204, "要删除的用户不存在！");
+		}
+		
+		user.setStatus(UserStatus.DELETED);
+		
+		userDao.save(user);
+		
+		return new RespPureDto(200, "成功删除！");
 	}
 }

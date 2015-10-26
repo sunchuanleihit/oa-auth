@@ -59,6 +59,18 @@ public class UserController {
 	
 	
 	
+	@RequestMapping(value = "/entity", method = RequestMethod.DELETE)
+	@ResponseBody
+	public RespPureDto entityDelete(
+			@RequestParam(value="id") int userId
+			) {
+		
+		return userService.deleteUser(userId);
+	}
+	
+	
+	
+	
 	@RequestMapping(value = "/doRepass")
 	@ResponseBody
 	public RespPureDto doRepass(

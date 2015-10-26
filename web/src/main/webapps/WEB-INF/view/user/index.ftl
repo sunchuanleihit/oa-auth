@@ -60,6 +60,33 @@
 
 
 
+
+<!--     删除用户模态框       -->
+<div class="modal fade" id="delete_user_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+      </div>
+      <div class="modal-body">
+
+			<form class="form-horizontal">
+				确定删除用户'<span id="deleting_username_label"></span>'吗?
+			</form>
+			<input type="hidden" id="deleting_user_id"  />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+        <button type="button" id="delete_user_button" class="btn btn-primary">确定删除</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -77,12 +104,18 @@ $(document).ready(function() {
 		    }, {
 		        field: 'department',
 		        title: '部门'
+		    }, {
+		        field: 'operation',
+		        title: '操作',
+		        formatter: userOperationFormatter
 		    }
 		];
 		
 		
 	initUsersTable(columns);
 	onClickCreateUserModal();
+	onClickDeleteUserModal();
+	onClickDeleteUserButton();
 	
 });
 
@@ -173,7 +206,48 @@ function onClickCreateUserModal() {
 
 
 
+function userOperationFormatter(value, row, index) {
+	return "<a user_id='"+row.id+"' user_name='"+row.name+"' class='delete_user_button_modal'>删除</a>";
+}
 
+
+function onClickDeleteUserModal() {
+	$("#usersTable").on("click", ".delete_user_button_modal",function() {
+		var userId = $(this).attr("user_id");
+		var userName = $(this).attr("user_name");
+		
+		$("#deleting_username_label").html(userName);
+		$("#deleting_user_id").val(userId);
+		$("#delete_user_modal").modal("show");
+	});
+}
+
+function onClickDeleteUserButton() {
+	$("#delete_user_button").click(function() {
+		var userId = $("#deleting_user_id").val();
+	
+		$.ajax( {    
+		    url:'../user/entity?id=' + userId, 
+		    data:{ 
+		    },    
+		    type:'delete',    
+		    cache:false,    
+		    dataType:'json',    
+		    success:function(data) {
+		    	 if (data.code == 200) {
+		    	 	$("#delete_user_modal").modal("hide");
+		    	 	refreshUsersTable();
+		    	 } else {
+		    	 	alert(data.errorMsg);
+		    	 }  
+		     },    
+		     error : function() {      
+		          alert("异常！");    
+		     }    
+		}); 
+	
+	});
+}
 
 
 

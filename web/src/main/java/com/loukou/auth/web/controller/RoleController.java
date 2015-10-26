@@ -1,5 +1,6 @@
 package com.loukou.auth.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,8 +102,13 @@ public class RoleController {
 	public RespPureDto  update(
 			@RequestParam(value="appId") int appId,
 			@RequestParam(value="userId") int userId,
-			@RequestParam(value="roleId[]") List<Integer> roleIds
+			@RequestParam(value="roleId[]", required = false) List<Integer> roleIds
 			) {
+		
+		if (roleIds == null) {
+			roleIds = new ArrayList<Integer>();
+		}
+		
 		return roleService.updateRolesForUser(appId, userId, roleIds);
 	}
 	

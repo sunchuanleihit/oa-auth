@@ -25,6 +25,13 @@ public interface UserDao extends CrudRepository<UserEntity, Integer>,
 	@Query("select u from UserEntity u where id not in (?1) ")
 	Page<UserEntity> findByNotInIds(List<Integer> ids, Pageable page);
 	
+	@Query("select u from UserEntity u where id not in (?1) and status in (?2) ")
+	Page<UserEntity> findByNotInIdsAndStatus(List<Integer> ids, int status, Pageable page);
+	
+	
 	Page<UserEntity> findAll(Pageable page);
+	
+	@Query("select u from UserEntity u where status = ?1")
+	Page<UserEntity> findAllByStatus(int status, Pageable page);
 
 }

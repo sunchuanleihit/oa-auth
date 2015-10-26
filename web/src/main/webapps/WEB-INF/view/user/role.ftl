@@ -292,8 +292,9 @@ function onClickUserUpdateModalButton() {
 	$("#usersRoleTable").on("click", ".user_update_modal_button", function() {
 		var userId = $(this).attr("user_id");
 		$("#update_user_id").val(userId);
-		refreshUserUpdateModal();
+		
 		$("#update_user_role_modal").modal("show");
+		refreshUserUpdateModal();
 		
 	});
 }
@@ -312,10 +313,15 @@ function refreshUserUpdateModal() {
 	    cache:false,    
 	    dataType:'json',    
 	    success:function(data) {
+	    
 	    	if (data.code == 200) {
+	    		$(".update_user_role_checkbox").each(function() {
+	    			$(this).attr("checked", false);
+	    		});
+
 	    		for (var idx in data.result.list) {
 	    			var role = data.result.list[idx];
-	    			$("#id_update_user_role_id_"+role.id).attr("checked", "checked");
+	    			document.getElementById("id_update_user_role_id_"+role.id).checked = true;
 	    		}
 	    	}
 	    },    

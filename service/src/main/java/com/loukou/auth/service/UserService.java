@@ -15,6 +15,8 @@ public interface UserService {
 
 	public RespPureDto createUser(UserBo user);
 	
+	public RespPureDto deleteUser(int userId);
+	
 	public RespPureDto resetPassword(String email, String oldPassword, String newPassword);
 	
 	public RespPureDto addUserRoleForApp(int appId, List<Integer> userIds, List<Integer> roleIds);

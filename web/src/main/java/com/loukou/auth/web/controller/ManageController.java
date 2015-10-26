@@ -33,6 +33,4 @@ public class ManageController extends BaseController {
 		return "admin/index";
 	}
 
-	
-
 }
