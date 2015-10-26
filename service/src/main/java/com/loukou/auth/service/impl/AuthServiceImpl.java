@@ -3,13 +3,17 @@ package com.loukou.auth.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.loukou.auth.api.AuthService;
 import com.loukou.auth.enums.AuthResultEnum;
 import com.loukou.auth.resp.dto.AuthUserDto;
+import com.loukou.auth.resp.dto.UserRespDto;
 import com.loukou.auth.resp.dto.base.RespDto;
+import com.loukou.auth.resp.dto.base.RespListDto;
+import com.loukou.auth.resp.dto.base.RespPageDto;
 import com.loukou.auth.service.UserService;
 import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.UserBo;
@@ -47,5 +51,20 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public RespListDto<UserRespDto> getUsersByAppId(int appId) {
+		RespPageDto<UserBo> userPage = userService.getUsersWithRole(appId, 1, 1000);
+		List<UserRespDto> userList = new ArrayList<UserRespDto>();
+		List<UserBo> userBoList = userPage.getRows();
+		for(UserBo userBo: userBoList){
+			UserRespDto authUser = new UserRespDto();
+			BeanUtils.copyProperties(userBo, authUser);
+			userList.add(authUser);
+		}
+		RespListDto<UserRespDto> respListDto = new RespListDto<UserRespDto>(200, "");
+		respListDto.getResult().setList(userList);
+		return respListDto;
 	}
 }
