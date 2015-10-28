@@ -17,6 +17,8 @@ public interface PrivilegeDao extends CrudRepository<PrivilegeEntity, Integer> {
 	
 	List<PrivilegeEntity> findByAppKey(String appKey);
 	
+	List<PrivilegeEntity> findAll();
+	
 	@Query("select p from PrivilegeEntity p where p.appKey = ?1")
 	Page<PrivilegeEntity> findPageByAppKey(String appKey, Pageable page);
 

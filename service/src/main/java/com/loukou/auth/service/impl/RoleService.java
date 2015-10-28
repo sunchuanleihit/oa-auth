@@ -73,10 +73,94 @@ public class RoleService {
 	
 	
 	
+	public List<RoleBo> getAllRoles() {
+		
+		Map<String, PrivilegeEntity> privMap = this.getAllPrivMap();
+		
+		if (privMap == null) {
+			return null;
+		}
+		
+		List<AppEntity> appList = appDao.findAll();
+		Map<Integer, AppEntity> appMap = new HashMap<Integer, AppEntity>();
+		for (AppEntity app : appList) {
+			appMap.put(app.getId(), app);
+		}
+		
+		List<RoleEntity> roles = roleDao.findAll();
+		
+		List<RoleBo> roleBos = new ArrayList<RoleBo>();
+		
+		for (RoleEntity role : roles) {
+			RoleBo roleBo = new RoleBo();
+			roleBo.setId(role.getId());
+			if (appMap.containsKey(role.getAppId())) {
+				roleBo.setAppName(appMap.get(role.getAppId()).getName());
+			}
+			roleBo.setAppId(role.getAppId());
+			roleBo.setName(role.getName());
+			
+			
+			
+			List<String> privileges = PrivilegeUtil.parsePrivKeys(role.getPrivilege());
+			StringBuilder sb = new StringBuilder();
+			for (String privilege : privileges) {
+				if (privMap.containsKey(privilege)) {
+					sb.append(privMap.get(privilege).getName());
+				} else {
+					sb.append(privilege);
+				}
+				sb.append("|");
+			}
+			role.setPrivilege(sb.toString());
+			roleBo.setPrivilege(sb.toString());
+			roleBos.add(roleBo);
+		}
+		
+		return roleBos;
+		
+	}
+	
+	
+	
 	public RespListDto<RoleEntity> getRolesByAppIdAndUserId(int appId, int userId) {
 		List<RoleEntity> rolesOfUser = new ArrayList<RoleEntity>();
 
 		List<RoleEntity> roles = roleDao.findByAppId(appId);
+		
+		if (CollectionUtils.isEmpty(roles)) {
+			return new RespListDto<RoleEntity>(204, "系统中没有角色！");
+		}
+
+		List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
+		if (CollectionUtils.isEmpty(userRoles)) {
+			return new RespListDto<RoleEntity>(204, "用户未关联任何角色！");
+		}
+		
+		List<Integer> roleIds = new ArrayList<Integer>();
+		for (UserRoleEntity userRole : userRoles) {
+			roleIds.add(userRole.getRoleId());
+		}
+		
+		for (RoleEntity role : roles) {
+			if (roleIds.contains(role.getId())) {
+				rolesOfUser.add(role);
+			}
+		}
+		
+		ListDto<RoleEntity> listDto = new ListDto<RoleEntity>("ok", rolesOfUser);
+
+		return new RespListDto<RoleEntity>(200, "ok", listDto);
+		
+	}
+	
+	
+	
+	
+	public RespListDto<RoleEntity> getRolesByUserId(int userId) {
+		List<RoleEntity> rolesOfUser = new ArrayList<RoleEntity>();
+
+		List<RoleEntity> roles = roleDao.findAll();
 		
 		if (CollectionUtils.isEmpty(roles)) {
 			return new RespListDto<RoleEntity>(204, "系统中没有角色！");
@@ -312,6 +396,70 @@ public class RoleService {
 		
 	}	
 	
+	
+public RespPureDto updateRolesForUser(int userId, List<Integer> roleIds) {
+		
+		if (roleIds == null) {
+			return new RespPureDto(204, "参数错误，roleIds为null！");
+		}
+
+		List<Integer> appRoleIds = roleDao.findIdsByAll();
+		
+		if (CollectionUtils.isEmpty(appRoleIds)) {
+			return new RespPureDto(204, "系统中没有角色！");
+		}
+		
+		for (Integer roleId : roleIds) {
+			if (!appRoleIds.contains(roleId)) {
+				return new RespPureDto(204, "数据错误，要新建的用户角色不存在于此app!");
+			}
+		}
+
+		List<UserRoleEntity> userRoles = userRoleDao.findByUserId(userId);
+		List<Integer> roleIdExist = new ArrayList<Integer>();
+		
+		if (!CollectionUtils.isEmpty(userRoles)) {
+			for (UserRoleEntity  userRole : userRoles) {
+				roleIdExist.add(userRole.getRoleId());
+			}			
+		}
+		
+		
+		
+
+		
+		
+		List<Integer> roleIdDeleting = new ArrayList<Integer>();
+		List<Integer> roleIdAdding = new ArrayList<Integer>();	
+		
+		roleIdAdding.addAll(roleIds);
+		roleIdAdding.removeAll(roleIdExist);
+		roleIdDeleting.addAll(roleIdExist);
+		roleIdDeleting.removeAll(roleIds);
+		
+		for (Integer roleId : roleIdAdding) {
+			UserRoleEntity userRole = new UserRoleEntity();
+			userRole.setRoleId(roleId);
+			userRole.setUserId(userId);
+			userRoleDao.save(userRole);
+		}
+		
+		if (roleIdDeleting.size() > 0) {
+			userRoles = userRoleDao.findByRoleIdsAndUserId(roleIdDeleting, userId);
+			if (!CollectionUtils.isEmpty(userRoles)) {
+				for (UserRoleEntity userRole : userRoles) {
+					userRoleDao.delete(userRole);
+				}
+			}
+		}
+		
+		return new RespPureDto(200, "用户角色更新成功！");
+		
+	}	
+	
+	
+	
+	
 	private Map<String, PrivilegeEntity> getPrivMapByAppId(int appId) {
 		AppEntity app = appDao.findById(appId);
 		if (app == null) {
@@ -337,6 +485,23 @@ public class RoleService {
 		return privMap;
 	}
 	
+	
+	private  Map<String, PrivilegeEntity> getAllPrivMap() {
+		
+		List<PrivilegeEntity> privs = privilegeDao.findAll();
+		
+		Map<String, PrivilegeEntity> privMap = new HashMap<String, PrivilegeEntity>();
+		
+		if (!CollectionUtils.isEmpty(privs)) {
+			for (PrivilegeEntity priv : privs) {
+				privMap.put(priv.getPrivKey(), priv);
+			}
+		}
+		
+		return privMap;
+		
+		
+	}
 
 	
 	

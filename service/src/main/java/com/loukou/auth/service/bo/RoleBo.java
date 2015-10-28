@@ -6,13 +6,29 @@ public class RoleBo {
 
 	private int id;
 	private int appId;
+	private String appName = "";
 	private String appDesc;
 	private String role;
 	private String name;
 	private List<PrivilegeBo> privileges;
+	private String privilege = "";
 	
 	
 	
+	
+	
+	public String getPrivilege() {
+		return privilege;
+	}
+	public void setPrivilege(String privilege) {
+		this.privilege = privilege;
+	}
+	public String getAppName() {
+		return appName;
+	}
+	public void setAppName(String appName) {
+		this.appName = appName;
+	}
 	public String getAppDesc() {
 		return appDesc;
 	}

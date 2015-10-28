@@ -27,9 +27,11 @@ import com.loukou.auth.service.bo.PrivilegeBo;
 import com.loukou.auth.service.bo.RoleBo;
 import com.loukou.auth.service.bo.UserBo;
 import com.loukou.auth.service.constants.UserStatus;
+import com.loukou.auth.service.dao.AppDao;
 import com.loukou.auth.service.dao.RoleDao;
 import com.loukou.auth.service.dao.UserDao;
 import com.loukou.auth.service.dao.UserRoleDao;
+import com.loukou.auth.service.entity.AppEntity;
 import com.loukou.auth.service.entity.RoleEntity;
 import com.loukou.auth.service.entity.UserEntity;
 import com.loukou.auth.service.entity.UserRoleEntity;
@@ -56,6 +58,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private AppDao appDao;
 
 	public UserBo validateToken(int appId, String token) {
 		if (StringUtils.isNotEmpty(token)) {
@@ -206,13 +211,39 @@ public class UserServiceImpl implements UserService {
 		
 		List<UserEntity> users = usersPage.getContent();
 		
+		List<RoleEntity> rolesList = roleDao.findAll();
+		List<AppEntity> appList = appDao.findAll();
+		Map<Integer, RoleEntity> roleMap = new HashMap<Integer, RoleEntity>();
+		Map<Integer, AppEntity> appMap = new HashMap<Integer, AppEntity>();
+		
+		for (RoleEntity role : rolesList) {
+			roleMap.put(role.getId(), role);
+		}
+		for (AppEntity app : appList) {
+			appMap.put(app.getId(), app);
+		}
+
+		
 		if (!CollectionUtils.isEmpty(users)) {
 			for (UserEntity user : users) {
+				List<UserRoleEntity> userRoles = userRoleDao.findByUserId(user.getId());
+				
+				List<RoleBo> roles = new ArrayList<RoleBo>();
+				if (!CollectionUtils.isEmpty(userRoles)) {
+					for (UserRoleEntity userRole : userRoles) {
+						RoleBo role = new RoleBo();
+						role.setId(role.getId());
+						role.setAppName(appMap.get(roleMap.get(userRole.getRoleId()).getAppId()).getName());
+						role.setName(roleMap.get(userRole.getRoleId()).getName());
+						roles.add(role);
+					}
+				}
 				UserBo userBo = new UserBo();
 				userBo.setId(user.getId());
 				userBo.setEmail(user.getEmail());
 				userBo.setDepartment(user.getDepartment());
 				userBo.setName(user.getRealName());
+				userBo.setRoles(roles);
 				userBos.add(userBo);
 			} 
 		} 

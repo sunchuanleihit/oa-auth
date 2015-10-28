@@ -60,6 +60,18 @@ public class RoleController {
 		return roles;
 	}
 	
+	@RequestMapping(value = "/rolesAll")
+	@ResponseBody
+	public List<RoleBo> getAllRoles(
+			
+			Model model
+			) {
+		
+		List<RoleBo> roles = roleService.getAllRoles();
+		
+		return roles;
+	}
+	
 	
 	@RequestMapping(value = "/rolesByAppIdAndUserId")
 	@ResponseBody
@@ -70,6 +82,17 @@ public class RoleController {
 		
 		return roleService.getRolesByAppIdAndUserId(appId, userId);
 	}
+	
+	
+	@RequestMapping(value = "/rolesByUserId")
+	@ResponseBody
+	public RespListDto<RoleEntity> getRoles(
+			@RequestParam(value="userId") int userId
+			) {
+		
+		return roleService.getRolesByUserId(userId);
+	}
+	
 	
 	
 	
@@ -97,10 +120,9 @@ public class RoleController {
 	
 	
 	
-	@RequestMapping(value = "/changeRolesForUser", method = RequestMethod.PUT )
+	@RequestMapping(value = "/changeAllRolesForUser", method = RequestMethod.PUT )
 	@ResponseBody
 	public RespPureDto  update(
-			@RequestParam(value="appId") int appId,
 			@RequestParam(value="userId") int userId,
 			@RequestParam(value="roleId[]", required = false) List<Integer> roleIds
 			) {
@@ -109,7 +131,7 @@ public class RoleController {
 			roleIds = new ArrayList<Integer>();
 		}
 		
-		return roleService.updateRolesForUser(appId, userId, roleIds);
+		return roleService.updateRolesForUser(userId, roleIds);
 	}
 	
 	
